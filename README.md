@@ -33,10 +33,11 @@ category: { (тут вопросики конечно)
 sale: NULL | ...
 quentity: ...
 description: {
-    material: 
+    material:
     ...
 }
 new: true | false
+flag: true | false
 
 CATEGORY
 category: {
@@ -61,6 +62,7 @@ email?:
 name?:
 password?:
 reviewId: (мб потом можно добавить)
+lovelyCard: Number[cardId]
 
 REVIEW (get, post)
 id: 
