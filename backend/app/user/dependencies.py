@@ -1,15 +1,15 @@
 from datetime import datetime
 from jose import jwt, JWTError
 
-from fastapi import Depends, Request, status
+from fastapi import Depends, HTTPException, Request, status
 from app.config import settings
-from app.user.dao import UsersDAO
-from app.user.models import Users
+from app.user.dao import UserDAO
+from app.user.models import User
 
 def get_token(request: Request):
-    token = request.cookies.get("booking_access_token")
+    token = request.cookies.get("access_token")
     if not token:
-        raise status.HTTP_400_BAD_REQUEST
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
     return token
 
 async def get_current_user(token: str = Depends(get_token)):
@@ -18,17 +18,17 @@ async def get_current_user(token: str = Depends(get_token)):
             token, settings.SECRET_KEY, settings.ALGORITHM
         )
     except JWTError:
-        raise status.HTTP_400_BAD_REQUEST
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST) #
 
     expire: str = payload.get("exp")
     if (not expire) or (int(expire) < datetime.utcnow().timestamp()):
-        raise status.HTTP_400_BAD_REQUEST
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
     user_id: str = payload.get("sub")
     if not user_id:
-        raise status.HTTP_400_BAD_REQUEST
-    user = await UsersDAO.find_by_id(int(user_id))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+    user = await UserDAO.find_one_or_none(id=int(user_id))
     if not user:
-        raise status.HTTP_400_BAD_REQUEST
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
     return user
 

@@ -2,10 +2,11 @@ from app.database import async_session_maker
 from sqlalchemy import delete, insert, select
 
 
-
+# Работа с базой данных изолированная в отдельный файл
 class BaseDAO:
     model = None
         
+    
     @classmethod
     async def find_one_or_none(cls, **filter_by):
         async with async_session_maker() as session:
