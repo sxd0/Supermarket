@@ -1,7 +1,11 @@
+import MainSlider from "../components/MainSlider";
+import SliderWithNew from "../components/SliderWithNew/index";
+
 const Home = () => {
   return (
     <>
-      <h1>Страница магазина одежды</h1>
+      <MainSlider />
+      <SliderWithNew />
     </>
   );
 };

@@ -1,0 +1,41 @@
+body {
+    overflow-x: hidden !important;
+}
+
+.slick-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: #000;
+    z-index: 2;
+    cursor: pointer;
+
+    &.slick-prev {
+        left: -30px;
+    }
+
+    &.slick-next {
+        right: -30px;
+    }
+
+    &:hover {
+        color: #555;
+    }
+}
+
+.slide {
+    box-sizing: border-box;
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100vw;
+    height: 92vh;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+
+    img {
+        width: 50vw;
+        height: 100vh;
+        object-fit: cover;
+    }
+}
