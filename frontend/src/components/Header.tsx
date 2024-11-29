@@ -1,7 +1,7 @@
 import { Link } from "react-router";
-import favouriteIcon from "../assets/favourite.svg";
-import profileIcon from "../assets/profile.svg";
-import cartIcon from "../assets/cart.svg";
+import favouriteIcon from "../assets/svg/favourite.svg";
+import profileIcon from "../assets/svg/profile.svg";
+import cartIcon from "../assets/svg/cart.svg";
 import { ReactSVG } from "react-svg";
 
 const Header = () => {
