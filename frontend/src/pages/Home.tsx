@@ -6,7 +6,6 @@ const Home = () => {
     <>
       <MainSlider />
       <SliderWithNew />
-      <h1>Страница магазина одежды</h1>
     </>
   );
 };

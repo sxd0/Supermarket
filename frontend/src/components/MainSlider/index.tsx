@@ -12,7 +12,7 @@ import styles from "./index.module.scss";
 const MainSlider = () => {
   const settings = {
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 2500,
     dots: true,
     infinite: true,
     speed: 500,
