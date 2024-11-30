@@ -1,5 +1,5 @@
 import MainSlider from "../components/MainSlider";
-import SliderWithNew from "../components/SliderWithNew";
+import SliderWithNew from "../components/SliderWithNew/index";
 
 const Home = () => {
   return (
