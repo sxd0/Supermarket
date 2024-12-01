@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:17
+    container_name: allsad_db
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    env_file:
+      - .env-none-dev
+    ports:
+      - 5432:5432
+
+  allsad:
+    image: allsad_app
+    build:
+      context: .
+    container_name: allsad_app
+    env_file:
+      - .env-none-dev
+    depends_on:
+      - db
+    command: ["/allsad/docker/app.sh"]
+    ports:
+      - 6000:8000
+
+volumes:
+  postgresdata:
