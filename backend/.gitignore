@@ -272,7 +272,7 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# Alembic
+# # Alembic
 # alembic.ini
 # alembic/
 

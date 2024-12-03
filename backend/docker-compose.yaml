@@ -7,8 +7,11 @@ services:
       - .env-none-dev
     ports:
       - 5432:5432
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   allsad:
     image: allsad_app
@@ -18,7 +21,8 @@ services:
     env_file:
       - .env-none-dev
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - 8080:8080
     command: >

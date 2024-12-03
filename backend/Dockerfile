@@ -12,7 +12,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-# Копируем SQL-скрипт инициализации
-COPY init.sql /docker-entrypoint-initdb.d/init.sql
-
 CMD ["gunicorn", "app.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8080"]
