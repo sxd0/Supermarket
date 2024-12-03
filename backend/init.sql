@@ -1,3 +1,45 @@
+-- Создание таблиц
+CREATE TABLE category (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    gender VARCHAR(50),
+    image INTEGER
+);
+
+CREATE TABLE "user" (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    hashed_password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE card (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    category_id INTEGER REFERENCES category(id),
+    quantity INTEGER NOT NULL,
+    description TEXT,
+    sale DECIMAL(10, 2),
+    new BOOLEAN,
+    flag BOOLEAN,
+    image INTEGER
+);
+
+CREATE TABLE cart (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES "user"(id),
+    card_id INTEGER REFERENCES card(id),
+    quantity INTEGER NOT NULL
+);
+
+CREATE TABLE review (
+    id SERIAL PRIMARY KEY,
+    stars INTEGER NOT NULL,
+    description TEXT,
+    user_id INTEGER REFERENCES "user"(id),
+    card_id INTEGER REFERENCES card(id)
+);
+
 -- Вставка данных в таблицу category
 INSERT INTO category (title, gender, image) VALUES
 ('T-Shirts', 'Male', 1),
@@ -8,7 +50,7 @@ INSERT INTO category (title, gender, image) VALUES
 ('Accessories', 'Unisex', 6);
 
 -- Вставка данных в таблицу user
-INSERT INTO `user` (email, hashed_password) VALUES
+INSERT INTO "user" (email, hashed_password) VALUES
 ('alice@example.com', 'hashed_password_1'),
 ('bob@example.com', 'hashed_password_2'),
 ('charlie@example.com', 'hashed_password_3'),
