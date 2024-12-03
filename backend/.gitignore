@@ -123,8 +123,8 @@ npm-debug.log
 yarn-error.log
 
 # Alembic
-alembic.ini
-alembic/
+# alembic.ini
+# alembic/
 
 # Pytest
 .pytest_cache/
@@ -134,7 +134,7 @@ alembic/
 .env.*
 
 # Migrations
-migrations/
+# migrations/
 
 # Logs
 *.log
@@ -273,8 +273,8 @@ npm-debug.log
 yarn-error.log
 
 # Alembic
-alembic.ini
-alembic/
+# alembic.ini
+# alembic/
 
 # Pytest
 .pytest_cache/
@@ -284,7 +284,7 @@ alembic/
 .env.*
 
 # Migrations
-migrations/
+# migrations/
 
 # Logs
 *.log
