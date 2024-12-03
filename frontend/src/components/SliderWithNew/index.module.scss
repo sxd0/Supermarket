@@ -1,7 +1,6 @@
 .sliderContainer {
     margin: 50px 20px 0 20px;
 
-
     h2 {
         text-align: center;
         margin-bottom: 20px;
@@ -10,19 +9,21 @@
 
 .card {
     text-align: center;
-    padding: 10px;
+
     img {
-        width: 320px;
+        width: 320px !important;
         height: auto;
         border-radius: 10px;
         object-fit: cover;
     }
     .info {
         margin-top: 10px;
+
         .title {
             font-size: 16px;
             color: #333;
         }
+
         .price {
             font-size: 14px;
             color: #888;

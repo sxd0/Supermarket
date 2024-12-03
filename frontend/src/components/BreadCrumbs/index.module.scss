@@ -1,0 +1,27 @@
+.nav {
+    display: flex;
+    gap: 15px;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    &__link {
+        text-decoration: none;
+        color: black;
+    }
+
+    &__title {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 0%;
+    }
+
+    &__arrow {
+        width: 18px;
+        height: 18px;
+        fill: black;
+    }
+}

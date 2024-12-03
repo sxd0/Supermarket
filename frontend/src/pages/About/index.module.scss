@@ -1,0 +1,24 @@
+.about {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    width: 1200px;
+    margin: 50px auto;
+
+    &__information {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+    }
+
+    &__img {
+        width: 400px;
+        height: 500px;
+    }
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
