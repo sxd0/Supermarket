@@ -8,7 +8,7 @@ INSERT INTO category (title, gender, image) VALUES
 ('Accessories', 'Unisex', 6);
 
 -- Вставка данных в таблицу user
-INSERT INTO `user` (email, hashed_password) VALUES
+INSERT INTO "user" (email, hashed_password) VALUES
 ('alice@example.com', 'hashed_password_1'),
 ('bob@example.com', 'hashed_password_2'),
 ('charlie@example.com', 'hashed_password_3'),
