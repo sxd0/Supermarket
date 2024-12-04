@@ -23,7 +23,7 @@ const Profile = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      if (response) {
+      if (response.ok) {
         const data = await response.json();
         setUser(data);
         setIsUser(true);
@@ -60,7 +60,8 @@ const Profile = () => {
               onChange={(e) => setEmail(e.target.value)}
               className={styles.profile__input}
               type="email"
-              placeholder="Email"
+              placeholder="Почта"
+              required
             />
             <input
               value={password}
@@ -68,6 +69,7 @@ const Profile = () => {
               className={styles.profile__input}
               type="password"
               placeholder="Пароль"
+              required
             />
             <button className={styles.profile__button} type="submit">
               Войти
@@ -82,7 +84,12 @@ const Profile = () => {
           </div>
         </section>
       ) : (
-        <h2 className={styles.wrapper__title}>Вы вошли под именем: {email}</h2>
+        <div>
+          <h2 className={styles.wrapper__title}>Ваше имя: {user?.name}</h2>
+          <h2 className={styles.wrapper__title}>
+            Ваша фамилия: {user?.surname}
+          </h2>
+        </div>
       )}
     </div>
   );

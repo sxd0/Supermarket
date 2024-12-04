@@ -35,28 +35,28 @@ const SwipeToSlide = () => {
       image:
         "https://i.pinimg.com/736x/62/c2/91/62c291988428eb4fd629b54f11da89eb.jpg",
       title: "Серая юбка",
-      price: "15 990 ₽",
+      price: "15990 ₽",
     },
     {
       id: 2,
       image:
         "https://i.pinimg.com/736x/b4/ec/c6/b4ecc617e16659875b3506794b29dc84.jpg",
       title: "Жакет из твида",
-      price: "12 990 ₽",
+      price: "12990 ₽",
     },
     {
       id: 3,
       image:
         "https://i.pinimg.com/736x/6d/d6/c7/6dd6c7a70ca92aa4bba0f89a1713f642.jpg",
       title: "Спортивный костюм",
-      price: "22 990 ₽",
+      price: "22990 ₽",
     },
     {
       id: 4,
       image:
         "https://i.pinimg.com/736x/16/bb/7d/16bb7d6f9fca0e671fd7d4d0d8f3d6d0.jpg",
       title: "Черное платье",
-      price: "13 990 ₽",
+      price: "13990 ₽",
     },
   ];
 
