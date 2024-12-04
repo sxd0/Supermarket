@@ -7,6 +7,7 @@ import Cart from "./pages/Cart";
 import MainLayout from "./layout/MainLayout/index";
 import About from "./pages/About";
 import New from "./pages/New";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/about" element={<About />} />
           <Route path="/new" element={<New />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>
