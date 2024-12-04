@@ -94,3 +94,9 @@
         color: #666;
     }
 }
+
+@media (max-width: 700px) {
+    .footer {
+        margin: 20px;
+    }
+}

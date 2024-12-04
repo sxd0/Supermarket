@@ -1,10 +1,14 @@
 import { useState } from "react";
 import styles from "./index.module.scss";
 import BreadCrumbs from "../../components/BreadCrumbs";
+import { User } from "../../Types/authType";
+import { Link } from "react-router";
 
 const Profile = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState<User | null>(null);
+  const [isUser, setIsUser] = useState(false);
 
   const fetchLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,28 +24,13 @@ const Profile = () => {
       });
 
       if (response) {
-        const data = response.json();
+        const data = await response.json();
+        setUser(data);
+        setIsUser(true);
         console.log("Вход пользователя: ", data);
-        fetchCards();
       }
     } catch (error) {
       console.log("Ошибка входа пользователя: ", error);
-    }
-  };
-
-  const fetchCards = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8080/card", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
-
-      if (response) console.log("Полученные карточки: ", response.json());
-    } catch (error) {
-      console.log("Ошибка получения данных: ", error);
     }
   };
 
@@ -61,23 +50,40 @@ const Profile = () => {
   return (
     <div>
       <BreadCrumbs items={breadCrumbs} />
-      <form className={styles.profile} onSubmit={fetchLogin}>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={styles.profile__input}
-          type="email"
-        />
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className={styles.profile__input}
-          type="password"
-        />
-        <button className={styles.profile__button} type="submit">
-          ОТПРАВИТЬ
-        </button>
-      </form>
+      {!isUser ? (
+        <section className={styles.wrapper}>
+          <h2 className={styles.wrapper__title}>Необходимо выполнить вход</h2>
+          <form className={styles.profile} onSubmit={fetchLogin}>
+            <h2 className={styles.profile__title}>Вход</h2>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles.profile__input}
+              type="email"
+              placeholder="Email"
+            />
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={styles.profile__input}
+              type="password"
+              placeholder="Пароль"
+            />
+            <button className={styles.profile__button} type="submit">
+              Войти
+            </button>
+          </form>
+
+          <div className={styles.registration}>
+            <h3 className={styles.registration__title}>У вас нет аккаунта?</h3>
+            <Link className={styles.registration__link} to="/registration">
+              Зарегистрироваться
+            </Link>
+          </div>
+        </section>
+      ) : (
+        <h2 className={styles.wrapper__title}>Вы вошли под именем: {email}</h2>
+      )}
     </div>
   );
 };
