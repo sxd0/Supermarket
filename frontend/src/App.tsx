@@ -8,6 +8,7 @@ import MainLayout from "./layout/MainLayout/index";
 import About from "./pages/About";
 import New from "./pages/New";
 import Profile from "./pages/Profile";
+import Registration from "./pages/Registration";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/new" element={<New />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/registration" element={<Registration />} />
         </Route>
       </Routes>
     </BrowserRouter>
