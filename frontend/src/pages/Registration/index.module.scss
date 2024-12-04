@@ -6,7 +6,7 @@
     min-height: 55vh;
 }
 
-.profile {
+.registration {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -69,6 +69,56 @@
 
         &:active {
             background: #ebebeb;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        min-height: 40vh;
+
+        &__title {
+            font-size: 20px;
+        }
+    }
+
+    .registration {
+        padding: 20px;
+        width: 80%;
+
+        &__title {
+            font-size: 20px;
+        }
+
+        &__input {
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        &__button {
+            font-size: 14px;
+            padding: 10px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .registration {
+        gap: 16px;
+        padding: 16px;
+
+        &__title {
+            font-size: 18px;
+        }
+
+        &__input {
+            font-size: 12px;
+            padding: 8px;
+        }
+
+        &__button {
+            font-size: 12px;
+            padding: 8px;
         }
     }
 }

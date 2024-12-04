@@ -90,3 +90,71 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    .wrapper {
+        min-height: 0;
+
+        &__title {
+            font-size: 20px;
+        }
+    }
+
+    .profile {
+        padding: 20px;
+        width: 80%;
+
+        &__title {
+            font-size: 20px;
+        }
+
+        &__input {
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        &__button {
+            font-size: 14px;
+            padding: 10px;
+        }
+    }
+
+    .registration {
+        &__link {
+            font-size: 14px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .profile {
+        gap: 16px;
+        padding: 16px;
+
+        &__title {
+            font-size: 18px;
+        }
+
+        &__input {
+            font-size: 12px;
+            padding: 8px;
+        }
+
+        &__button {
+            font-size: 12px;
+            padding: 8px;
+        }
+    }
+
+    .registration {
+        gap: 10px;
+
+        &__title {
+            font-size: 18px;
+        }
+
+        &__link {
+            font-size: 14px;
+        }
+    }
+}
