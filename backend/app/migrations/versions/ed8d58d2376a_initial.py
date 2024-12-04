@@ -1,14 +1,25 @@
+"""Initial
+
+Revision ID: ed8d58d2376a
+Revises: 
+Create Date: 2024-12-04 19:47:01.201608
+
+"""
+from typing import Sequence, Union
+
 from alembic import op
 import sqlalchemy as sa
 
+
 # revision identifiers, used by Alembic.
-revision = 'your_revision_id'
-down_revision = None
-branch_labels = None
-depends_on = None
+revision: str = 'ed8d58d2376a'
+down_revision: Union[str, None] = None
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
+
 
 def upgrade():
-    # Создание таблицы category
+    # Создание таблиц
     op.create_table(
         'category',
         sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
@@ -17,15 +28,15 @@ def upgrade():
         sa.Column('image', sa.Integer, nullable=False)
     )
 
-    # Создание таблицы user
     op.create_table(
         'user',
         sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
         sa.Column('email', sa.String, nullable=False),
-        sa.Column('hashed_password', sa.String, nullable=False)
+        sa.Column('hashed_password', sa.String, nullable=False),
+        sa.Column('name', sa.String, nullable=False),
+        sa.Column('surname', sa.String, nullable=False)
     )
 
-    # Создание таблицы card
     op.create_table(
         'card',
         sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
@@ -40,7 +51,6 @@ def upgrade():
         sa.Column('image', sa.Integer, nullable=False)
     )
 
-    # Создание таблицы cart
     op.create_table(
         'cart',
         sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
@@ -49,7 +59,6 @@ def upgrade():
         sa.Column('quantity', sa.Integer, nullable=False)
     )
 
-    # Создание таблицы review
     op.create_table(
         'review',
         sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
@@ -72,12 +81,12 @@ def upgrade():
 
     # Вставка данных в таблицу user
     op.execute("""
-    INSERT INTO "user" (email, hashed_password) VALUES
-    ('alice@example.com', 'hashed_password_1'),
-    ('bob@example.com', 'hashed_password_2'),
-    ('charlie@example.com', 'hashed_password_3'),
-    ('diana@example.com', 'hashed_password_4'),
-    ('eve@example.com', 'hashed_password_5');
+    INSERT INTO "user" (email, hashed_password, name, surname) VALUES
+    ('alice@example.com', 'hashed_password_1', 'Alice', 'Smith'),
+    ('bob@example.com', 'hashed_password_2', 'Bob', 'Johnson'),
+    ('charlie@example.com', 'hashed_password_3', 'Charlie', 'Brown'),
+    ('diana@example.com', 'hashed_password_4', 'Diana', 'Prince'),
+    ('eve@example.com', 'hashed_password_5', 'Eve', 'Adams');
     """)
 
     # Вставка данных в таблицу card
