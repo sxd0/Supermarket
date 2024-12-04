@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./index.module.scss";
+import BreadCrumbs from "../../components/BreadCrumbs";
 
 const Profile = () => {
   const [email, setEmail] = useState("");
@@ -44,8 +45,22 @@ const Profile = () => {
     }
   };
 
+  const breadCrumbs = [
+    {
+      id: 1,
+      title: "Главная",
+      link: "/",
+    },
+    {
+      id: 2,
+      title: "Профиль",
+      link: "#",
+    },
+  ];
+
   return (
-    <>
+    <div>
+      <BreadCrumbs items={breadCrumbs} />
       <form className={styles.profile} onSubmit={fetchLogin}>
         <input
           value={email}
@@ -63,7 +78,7 @@ const Profile = () => {
           ОТПРАВИТЬ
         </button>
       </form>
-    </>
+    </div>
   );
 };
 
