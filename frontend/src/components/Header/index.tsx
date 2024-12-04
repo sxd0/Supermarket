@@ -32,7 +32,7 @@ const Header = () => {
           <Link to="/">
             <ReactSVG src={favouriteIcon} className={styles.icon} />
           </Link>
-          <Link to="/">
+          <Link to="/profile">
             <ReactSVG src={profileIcon} className={styles.icon} />
           </Link>
           <Link to="/cart">
