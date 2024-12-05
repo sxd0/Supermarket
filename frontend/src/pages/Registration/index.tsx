@@ -47,23 +47,23 @@ const Registration = () => {
     <div>
       <BreadCrumbs items={breadCrumbs} />
       <section className={styles.wrapper}>
-        <form className={styles.profile} onSubmit={fetchLogin}>
-          <h2 className={styles.profile__title}>Регистрация</h2>
+        <form className={styles.registration} onSubmit={fetchLogin}>
+          <h2 className={styles.registration__title}>Регистрация</h2>
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={styles.profile__input}
+            className={styles.registration__input}
             type="email"
             placeholder="Email"
           />
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={styles.profile__input}
+            className={styles.registration__input}
             type="password"
             placeholder="Пароль"
           />
-          <button className={styles.profile__button} type="submit">
+          <button className={styles.registration__button} type="submit">
             Зарегистрироваться
           </button>
         </form>
