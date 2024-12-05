@@ -8,4 +8,4 @@ class Category(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     title = Column(String, nullable=False)
     gender = Column(String, nullable=False)
-    image = Column(Integer)
+    image = Column(String, nullable=False)
