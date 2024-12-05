@@ -54,7 +54,7 @@ const New = () => {
         {isLoading ? (
           <div className={styles.cards}>
             {cards.map((item) => (
-              <div>
+              <div key={item.id}>
                 <ProductCard {...item} />
               </div>
             ))}
