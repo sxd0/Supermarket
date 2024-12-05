@@ -4,7 +4,7 @@ from jose import JWTError, jwt
 from app.config import settings
 from app.user.auth import authenticate_user, create_access_token, create_refresh_token, get_password_hash, verify_password
 from app.user.dao import UserDAO
-from app.user.dependencies import get_current_user, get_token
+from app.user.dependencies import get_current_user, get_refresh_token, get_token
 from app.user.models import User
 from app.user.schemas import SUserLogin, SUserRegister
 
@@ -37,23 +37,53 @@ async def login_user(response: Response, user_data: SUserLogin):
     response.set_cookie("refresh_token", refresh_token, httponly=True)
     return user
 
-# обновления access токена с использованием refresh токена
+# обновления access токена с использованием refresh токена (((НЕ ХВАТАЕТ УДАЛЕНИЕ КУКИ)))
+# @router.post("/refresh")
+# async def refresh_token(response: Response, refresh_token: str = Depends(get_token)):
+#     try:
+#         payload = jwt.decode(refresh_token, settings.SECRET_KEY, settings.ALGORITHM)
+#     except JWTError:
+#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+#     user_id: str = payload.get("sub")
+#     if not user_id:
+#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+#     user = await UserDAO.find_one_or_none(id=int(user_id))
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+#     access_token = create_access_token({"sub": str(user.id)})
+#     response.set_cookie("access_token", access_token, httponly=True)
+#     return {"access_token": access_token}
+
 @router.post("/refresh")
-async def refresh_token(response: Response, refresh_token: str = Depends(get_token)):
+async def refresh_token(response: Response, refresh_token: str = Depends(get_refresh_token)):
     try:
         payload = jwt.decode(refresh_token, settings.SECRET_KEY, settings.ALGORITHM)
     except JWTError:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid refresh token")
 
     user_id: str = payload.get("sub")
     if not user_id:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid refresh token")
     user = await UserDAO.find_one_or_none(id=int(user_id))
     if not user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User not found")
 
+    # Аннулирование старого access токена
+    response.delete_cookie("access_token")
+
+    # Аннулирование старого refresh токена
+    response.delete_cookie("refresh_token")
+
+    # Создание нового access токена
     access_token = create_access_token({"sub": str(user.id)})
     response.set_cookie("access_token", access_token, httponly=True)
+
+    # Создание нового refresh токена
+    new_refresh_token = create_refresh_token({"sub": str(user.id)})
+    response.set_cookie("refresh_token", new_refresh_token, httponly=True)
+
     return {"access_token": access_token}
 
 
