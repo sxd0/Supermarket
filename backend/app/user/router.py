@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, Response, status, HTTPException
+from jose import JWTError, jwt
 
-from app.user.auth import authenticate_user, create_access_token, get_password_hash, verify_password
+from app.config import settings
+from app.user.auth import authenticate_user, create_access_token, create_refresh_token, get_password_hash, verify_password
 from app.user.dao import UserDAO
-from app.user.dependencies import get_current_user
+from app.user.dependencies import get_current_user, get_token
 from app.user.models import User
 from app.user.schemas import SUserLogin, SUserRegister
 
@@ -30,8 +32,31 @@ async def login_user(response: Response, user_data: SUserLogin):
     if not user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
     access_token = create_access_token({"sub": str(user.id)})
+    # response.set_cookie("access_token", access_token, httponly=True)
+    refresh_token = create_refresh_token({"sub": str(user.id)})
+
     response.set_cookie("access_token", access_token, httponly=True)
-    return user #
+    response.set_cookie("refresh_token", refresh_token, httponly=True)
+    return user
+
+# обновления access токена с использованием refresh токена
+@router.post("/refresh")
+async def refresh_token(response: Response, refresh_token: str = Depends(get_token)):
+    try:
+        payload = jwt.decode(refresh_token, settings.SECRET_KEY, settings.ALGORITHM)
+    except JWTError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+    user_id: str = payload.get("sub")
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+    user = await UserDAO.find_one_or_none(id=int(user_id))
+    if not user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+    access_token = create_access_token({"sub": str(user.id)})
+    response.set_cookie("access_token", access_token, httponly=True)
+    return {"access_token": access_token}
 
 
 @router.post("/logout")
