@@ -1,8 +1,6 @@
 services:
   db:
     image: postgres:17
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     container_name: allsad_db
     env_file:
       - .env-none-dev
@@ -28,5 +26,3 @@ services:
       - 8080:8080
     command: ["/entrypoint.sh"]
 
-volumes:
-  postgres_data:
