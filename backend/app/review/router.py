@@ -10,9 +10,9 @@ router = APIRouter(
     tags=["Отзывы"],
 )
 
-@router.get("/all") # Инструмент разработчика
-async def get_reviews():
-    return await ReviewDAO.find_all()
+# @router.get("/all") # Инструмент разработчика
+# async def get_reviews():
+#     return await ReviewDAO.find_all()
 
 @router.get("") # Получение всех отзывов для пользователя
 async def get_reviews_for_user(user: User = Depends(get_current_user)):
