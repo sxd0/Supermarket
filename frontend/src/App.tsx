@@ -9,6 +9,7 @@ import About from "./pages/About";
 import New from "./pages/New";
 import Profile from "./pages/Profile";
 import Registration from "./pages/Registration";
+import AboutCard from "./pages/AboutCard";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/new" element={<New />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/registration" element={<Registration />} />
+          <Route path="/card/:id" element={<AboutCard />} />
         </Route>
       </Routes>
     </BrowserRouter>

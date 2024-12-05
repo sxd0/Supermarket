@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Card } from "../../Types/cardType";
 import styles from "./index.module.scss";
 import ProductCard from "../../components/ProductCard";
+import BreadCrumbs from "../../components/BreadCrumbs";
 
 const New = () => {
   const [cards, setCards] = useState<Card[]>([]);
@@ -32,21 +33,37 @@ const New = () => {
     fetchCards();
   }, []);
 
+  const breadCrumbs = [
+    {
+      id: 1,
+      title: "Главная",
+      link: "/",
+    },
+    {
+      id: 2,
+      title: "Новинки",
+      link: "/",
+    },
+  ];
+
   return (
-    <section className={styles.sales}>
-      <h2 className={styles.sales__title}>Новинки</h2>
-      {isLoading ? (
-        <div className={styles.cards}>
-          {cards.map((item) => (
-            <div>
-              <ProductCard {...item} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <h3 className={styles.sales__title}>Загрузка новинок...</h3>
-      )}
-    </section>
+    <div>
+      <BreadCrumbs items={breadCrumbs} />
+      <section className={styles.sales}>
+        <h2 className={styles.sales__title}>Новинки</h2>
+        {isLoading ? (
+          <div className={styles.cards}>
+            {cards.map((item) => (
+              <div>
+                <ProductCard {...item} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <h3 className={styles.sales__title}>Загрузка новинок...</h3>
+        )}
+      </section>
+    </div>
   );
 };
 
