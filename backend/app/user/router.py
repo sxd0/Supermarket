@@ -19,10 +19,8 @@ async def register_user(user_data: SUserRegister):
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
     hashed_password = get_password_hash(user_data.password)
-    try:
-        await UserDAO.add(email=user_data.email, hashed_password=hashed_password, name=user_data.name, surname=user_data.surname)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail="Conflict in database: possible duplicate ID or email.")
+    await UserDAO.add(email=user_data.email, hashed_password=hashed_password, name=user_data.name, surname=user_data.surname)
+
 
 
 
