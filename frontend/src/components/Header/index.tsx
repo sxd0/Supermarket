@@ -4,31 +4,38 @@ import profileIcon from "../../assets/svg/profile.svg";
 import cartIcon from "../../assets/svg/cart.svg";
 import { ReactSVG } from "react-svg";
 import styles from "./index.module.scss";
+import { useState } from "react";
 
 const Header = () => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+
   return (
     <div className={styles.header}>
       <div className={styles.header__container}>
-        <Link to="/" className={styles.header__button}>
-        <p className={styles.header__title}>AllSad</p>
+        <Link to="/" className={styles.header__title}>
+          AllSad
         </Link>
 
-        <section className={styles.header__section}>
+        <div className={styles.header__nav}>
           <Link to="/" className={styles.header__button}>
-            <p>Женщинам</p>
+            Женщинам
           </Link>
           <Link to="/" className={styles.header__button}>
-            <p>Мужчинам</p>
+            Мужчинам
           </Link>
           <Link to="/new" className={styles.header__button}>
-            <p>Новинки</p>
+            Новинки
           </Link>
           <Link to="/about" className={styles.header__button}>
-            <p>О нас</p>
+            О нас
           </Link>
-        </section>
+        </div>
 
-        <section className={styles.header__buttons}>
+        <div className={styles.header__icons}>
           <Link to="/">
             <ReactSVG src={favouriteIcon} className={styles.icon} />
           </Link>
@@ -38,8 +45,38 @@ const Header = () => {
           <Link to="/cart">
             <ReactSVG src={cartIcon} className={styles.icon} />
           </Link>
-        </section>
+        </div>
+
+        <div className={styles.header__burger} onClick={togglePopup}>
+          <span className={styles.burger__line} />
+          <span className={styles.burger__line} />
+          <span className={styles.burger__line} />
+        </div>
       </div>
+
+      {isPopupOpen && (
+        <div className={styles.popup} onClick={togglePopup}>
+          <div className={styles.popup__content}>
+            <button className={styles.popup__close} onClick={togglePopup}>
+              <ReactSVG src={favouriteIcon} className={styles.popup__icon} />
+            </button>
+            <nav className={styles.popup__nav}>
+              <Link to="/" className={styles.header__button}>
+                Женщинам
+              </Link>
+              <Link to="/" className={styles.header__button}>
+                Мужчинам
+              </Link>
+              <Link to="/new" className={styles.header__button}>
+                Новинки
+              </Link>
+              <Link to="/about" className={styles.header__button}>
+                О нас
+              </Link>
+            </nav>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
