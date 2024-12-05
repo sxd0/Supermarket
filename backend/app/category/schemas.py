@@ -5,7 +5,7 @@ class SCategory(BaseModel):
     id: int
     title: str
     gender: str
-    image: int | None = None
+    image: str
 
 
     class Config:

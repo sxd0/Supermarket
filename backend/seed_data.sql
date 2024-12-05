@@ -16,12 +16,12 @@ INSERT INTO category (id, title, gender, image) VALUES
 (6, 'Accessories', 'Unisex', 'image6.jpg');
 
 -- Вставка данных в таблицу user
-INSERT INTO "user" (id, email, hashed_password, name, surname) VALUES
-(1, 'alice@example.com', 'hashed_password_1', 'Alice', 'Smith'),
-(2, 'bob@example.com', 'hashed_password_2', 'Bob', 'Johnson'),
-(3, 'charlie@example.com', 'hashed_password_3', 'Charlie', 'Brown'),
-(4, 'diana@example.com', 'hashed_password_4', 'Diana', 'Prince'),
-(5, 'eve@example.com', 'hashed_password_5', 'Eve', 'Adams');
+INSERT INTO "user" (email, hashed_password, name, surname) VALUES
+('alice@example.com', 'hashed_password_1', 'Alice', 'Smith'),
+('bob@example.com', 'hashed_password_2', 'Bob', 'Johnson'),
+('charlie@example.com', 'hashed_password_3', 'Charlie', 'Brown'),
+('diana@example.com', 'hashed_password_4', 'Diana', 'Prince'),
+('eve@example.com', 'hashed_password_5', 'Eve', 'Adams');
 
 -- Вставка данных в таблицу card
 INSERT INTO card (id, title, price, category_id, quantity, description, sale, new, flag, image, size) VALUES
@@ -41,9 +41,9 @@ INSERT INTO cart (id, user_id, card_id, quantity) VALUES
 (5, 5, 5, 1);
 
 -- Вставка данных в таблицу review
-INSERT INTO review (id, stars, description, user_id, card_id) VALUES
-(1, 5, 'Great quality T-Shirt!', 1, 1),
-(2, 4, 'Beautiful summer dress', 2, 2),
-(3, 3, 'Comfortable jeans', 3, 3),
-(4, 5, 'Durable and stylish jacket', 4, 4),
-(5, 4, 'Elegant and comfortable heels', 5, 5);
+INSERT INTO review (stars, description, user_id, card_id) VALUES
+(5, 'Great quality T-Shirt!', 1, 1),
+(4, 'Beautiful summer dress', 2, 2),
+(3, 'Comfortable jeans', 3, 3),
+(5, 'Durable and stylish jacket', 4, 4),
+(4, 'Elegant and comfortable heels', 5, 5);
