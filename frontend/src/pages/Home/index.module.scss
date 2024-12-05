@@ -1,0 +1,80 @@
+.sales {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.cards {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__img {
+        width: 300px;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    &__price {
+        font-size: 14px;
+        color: #888;
+    }
+
+    &__title {
+        font-weight: 700;
+        line-height: 0;
+    }
+
+    &__description,
+    &__price {
+        line-height: 0;
+    }
+}
+
+@media (max-width: 700px) {
+    .sales {
+        gap: 10px;
+    }
+
+    .cards {
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .card {
+        &__img {
+            width: 150px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        &__price {
+            font-size: 12px;
+            color: #888;
+        }
+
+        &__title {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 0;
+        }
+
+        &__description,
+        &__price {
+            font-size: 14px;
+            line-height: 0;
+        }
+    }
+}
