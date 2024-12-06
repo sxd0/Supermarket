@@ -1,37 +1,27 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "./index.module.scss";
 import BreadCrumbs from "../../components/BreadCrumbs";
-import { User } from "../../Types/authType";
 import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, logoutUser } from "../../store/slices/userSlice";
+import { AppDispatch, RootState } from "../../store/store";
 
 const Profile = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState<User | null>(null);
-  const [isUser, setIsUser] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.user);
 
-  const fetchLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    dispatch(loginUser({ email, password }));
+  };
 
-    try {
-      const response = await fetch("http://127.0.0.1:8080/auth/login", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data);
-        setIsUser(true);
-        console.log("Вход пользователя: ", data);
-      }
-    } catch (error) {
-      console.log("Ошибка входа пользователя: ", error);
-    }
+  const handleLogout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(logoutUser());
+    setEmail("");
+    setPassword("");
   };
 
   const breadCrumbs = [
@@ -50,10 +40,10 @@ const Profile = () => {
   return (
     <div>
       <BreadCrumbs items={breadCrumbs} />
-      {!isUser ? (
+      {!user ? (
         <section className={styles.wrapper}>
           <h2 className={styles.wrapper__title}>Необходимо выполнить вход</h2>
-          <form className={styles.profile} onSubmit={fetchLogin}>
+          <form className={styles.profile} onSubmit={handleLogin}>
             <h2 className={styles.profile__title}>Вход</h2>
             <input
               value={email}
@@ -89,6 +79,9 @@ const Profile = () => {
           <h2 className={styles.wrapper__title}>
             Ваша фамилия: {user?.surname}
           </h2>
+          <button className={styles.wrapper__button} onClick={handleLogout}>
+            Выйти
+          </button>
         </div>
       )}
     </div>
