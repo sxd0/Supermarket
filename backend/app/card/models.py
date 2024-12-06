@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from app.database import Base
-
+from sqlalchemy.orm import relationship
 
 
 class Card(Base):
@@ -17,3 +17,13 @@ class Card(Base):
     new = Column(Boolean)
     flag = Column(Boolean)
     image = Column(String, nullable=False)
+
+    category = relationship("Category", back_populates="card")
+    review = relationship("Review", back_populates="card")
+
+    cart = relationship("Cart", back_populates="card")
+
+
+
+    def __str__(self):
+        return f"{self.title}"
