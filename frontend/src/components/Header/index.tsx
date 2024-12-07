@@ -21,10 +21,10 @@ const Header = () => {
         </Link>
 
         <div className={styles.header__nav}>
-          <Link to="/" className={styles.header__button}>
+          <Link to="/catalog" className={styles.header__button}>
             Женщинам
           </Link>
-          <Link to="/" className={styles.header__button}>
+          <Link to="/catalog" className={styles.header__button}>
             Мужчинам
           </Link>
           <Link to="/new" className={styles.header__button}>

@@ -10,6 +10,7 @@ import New from "./pages/New";
 import Profile from "./pages/Profile";
 import Registration from "./pages/Registration";
 import AboutCard from "./pages/AboutCard";
+import Catalog from "./pages/Catalog";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/catalog" element={<Catalog />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/about" element={<About />} />
           <Route path="/new" element={<New />} />
