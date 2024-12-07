@@ -13,6 +13,10 @@
   }
 }
 
+body {
+  overflow-x: hidden !important;
+}
+
 .card {
   padding: 2em;
 }
