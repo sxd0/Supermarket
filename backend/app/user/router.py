@@ -19,7 +19,11 @@ async def register_user(user_data: SUserRegister):
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
     hashed_password = get_password_hash(user_data.password)
-    await UserDAO.add(email=user_data.email, hashed_password=hashed_password, name=user_data.name, surname=user_data.surname)
+    adminis: bool = False
+    if user_data.email == "admin@123.com":
+        adminis = True
+
+    await UserDAO.add(email=user_data.email, hashed_password=hashed_password, name=user_data.name, surname=user_data.surname, is_admin=adminis)
 
 
 
