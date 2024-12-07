@@ -10,7 +10,8 @@ import New from "./pages/New";
 import Profile from "./pages/Profile";
 import Registration from "./pages/Registration";
 import AboutCard from "./pages/AboutCard";
-import Catalog from "./pages/Catalog";
+import CatalogMale from "./pages/CatalogMale";
+import CatalogFemale from "./pages/CatalogFemale";
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog-female" element={<CatalogFemale />} />
+          <Route path="/catalog-male" element={<CatalogMale />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/about" element={<About />} />
           <Route path="/new" element={<New />} />

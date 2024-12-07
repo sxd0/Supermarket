@@ -56,6 +56,26 @@ const Home = () => {
           <h3 className={styles.sales__title}>Загрузка скидок...</h3>
         )}
       </section>
+
+      <section className={styles.popular}>
+        <h2 className={styles.popular__title}>Популярные товары</h2>
+        {isLoading ? (
+          <div className={styles.cards}>
+            {cards.map(
+              (item) =>
+                item.popular && (
+                  <div key={item.id}>
+                    <ProductCard {...item} />
+                  </div>
+                )
+            )}
+          </div>
+        ) : (
+          <h3 className={styles.sales__title}>
+            Загрузка популярных товаров...
+          </h3>
+        )}
+      </section>
     </div>
   );
 };

@@ -5,7 +5,7 @@ import type { Catalog } from "../../Types/catalogType";
 import { Card } from "../../Types/cardType";
 import ProductCard from "../../components/ProductCard";
 
-const Catalog = () => {
+const CatalogFemale = () => {
   const [cards, setCards] = useState<Card[]>([]);
   const [catalog, setCatalog] = useState<Catalog[]>([]);
   const [isLoadingCatalog, setIsLoadingCatalog] = useState(false);
@@ -101,11 +101,14 @@ const Catalog = () => {
 
         {isLoadingCards ? (
           <section className={styles.cards}>
-            {cards.map((item) => (
-              <div key={item.id}>
-                <ProductCard {...item} />
-              </div>
-            ))}
+            {cards.map(
+              (item) =>
+                item.gender === "female" && (
+                  <div key={item.id}>
+                    <ProductCard {...item} />
+                  </div>
+                )
+            )}
           </section>
         ) : (
           <h3>Загрузка карточек...</h3>
@@ -115,4 +118,4 @@ const Catalog = () => {
   );
 };
 
-export default Catalog;
+export default CatalogFemale;

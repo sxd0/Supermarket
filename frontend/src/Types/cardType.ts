@@ -6,8 +6,9 @@ export interface Card {
   quantity: number | null;
   description: string;
   size: string;
+  gender: string;
   sale: number | null;
   new: boolean;
-  flag: boolean;
+  popular: boolean;
   image: string;
 }
