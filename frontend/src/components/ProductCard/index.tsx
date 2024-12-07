@@ -7,12 +7,11 @@ const ProductCard = (props: Card) => {
     <Link to={`/card/${props.id}`} key={props.id} className={styles.card}>
       <img
         className={styles.card__img}
-        src="https://i.pinimg.com/736x/62/c2/91/62c291988428eb4fd629b54f11da89eb.jpg"
-        alt="photo"
+        src={props.image}
+        alt={`photo_${props.id}`}
       />
       <p className={styles.card__title}>{props.title}</p>
-      <p className={styles.card__description}>{props.description}</p>
-      <p className={styles.card__price}>{props.price * 100} ₽</p>
+      <p className={styles.card__price}>{props.price} ₽</p>
     </Link>
   );
 };

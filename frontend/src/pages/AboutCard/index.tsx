@@ -31,9 +31,7 @@ const AboutCard = () => {
         if (response.ok) {
           const data = await response.json();
           setCard(data);
-          setSelectedImage(
-            "https://i.pinimg.com/736x/62/c2/91/62c291988428eb4fd629b54f11da89eb.jpg"
-          );
+          setSelectedImage(data.image);
         }
       } catch (error) {
         console.error("Ошибка получения карточки: ", error);
@@ -59,10 +57,8 @@ const AboutCard = () => {
     );
   };
 
-  const handleImageSelect = () => {
-    setSelectedImage(
-      "https://i.pinimg.com/736x/62/c2/91/62c291988428eb4fd629b54f11da89eb.jpg"
-    );
+  const handleImageSelect = (item: string) => {
+    setSelectedImage(item);
   };
 
   const breadCrumbs = [
@@ -82,10 +78,7 @@ const AboutCard = () => {
                 src={selectedImage}
                 alt="Small photo"
                 className={`${styles.thumbnail} ${
-                  selectedImage ===
-                  "https://i.pinimg.com/736x/62/c2/91/62c291988428eb4fd629b54f11da89eb.jpg"
-                    ? styles.thumbnail__active
-                    : ""
+                  selectedImage === card.image ? styles.thumbnail__active : ""
                 }`}
                 onClick={() => handleImageSelect}
               />
@@ -100,7 +93,7 @@ const AboutCard = () => {
           <div className={styles.details}>
             <div className={styles.details__section}>
               <h1 className={styles.details__title}>{card.title}</h1>
-              <p className={styles.details__price}>{card.price * 100} ₽</p>
+              <p className={styles.details__price}>{card.price} ₽</p>
             </div>
 
             <p className={styles.details__description}>{card.description}</p>
