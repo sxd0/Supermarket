@@ -43,7 +43,14 @@ const Home = () => {
         <h2 className={styles.sales__title}>Скидки</h2>
         {isLoading ? (
           <div className={styles.cards}>
-            {cards.map((item) => item.sale && <ProductCard {...item} />)}
+            {cards.map(
+              (item) =>
+                item.sale && (
+                  <div key={item.id}>
+                    <ProductCard {...item} />
+                  </div>
+                )
+            )}
           </div>
         ) : (
           <h3 className={styles.sales__title}>Загрузка скидок...</h3>

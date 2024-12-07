@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import { Card } from "../../Types/cardType";
 import styles from "./index.module.scss";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import BreadCrumbs from "../../components/BreadCrumbs";
+import { ReactSVG } from "react-svg";
+import favouriteIcon from "../../assets/svg/favourite.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const AboutCard = () => {
   const { id } = useParams<string>();
   const [card, setCard] = useState<Card | null>(null);
-  const [openSection, setOpenSection] = useState<string | null>(null);
+  const [openSection, setOpenSection] = useState<string[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string>("");
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCard = async () => {
@@ -23,6 +31,9 @@ const AboutCard = () => {
         if (response.ok) {
           const data = await response.json();
           setCard(data);
+          setSelectedImage(
+            "https://i.pinimg.com/736x/62/c2/91/62c291988428eb4fd629b54f11da89eb.jpg"
+          );
         }
       } catch (error) {
         console.error("Ошибка получения карточки: ", error);
@@ -32,8 +43,26 @@ const AboutCard = () => {
     fetchCard();
   }, [id]);
 
+  const addInCart = () => {
+    if (!user) return navigate("/profile");
+  };
+
+  const addInFavourite = () => {
+    if (!user) return navigate("/profile");
+  };
+
   const toggleSection = (section: string) => {
-    setOpenSection((prev) => (prev === section ? null : section));
+    setOpenSection((prev) =>
+      prev.includes(section)
+        ? prev.filter((s) => s !== section)
+        : [...prev, section]
+    );
+  };
+
+  const handleImageSelect = () => {
+    setSelectedImage(
+      "https://i.pinimg.com/736x/62/c2/91/62c291988428eb4fd629b54f11da89eb.jpg"
+    );
   };
 
   const breadCrumbs = [
@@ -48,9 +77,22 @@ const AboutCard = () => {
       {card ? (
         <div className={styles.product}>
           <div className={styles.gallery}>
+            <div className={styles.gallery__thumbnails}>
+              <img
+                src={selectedImage}
+                alt="Small photo"
+                className={`${styles.thumbnail} ${
+                  selectedImage ===
+                  "https://i.pinimg.com/736x/62/c2/91/62c291988428eb4fd629b54f11da89eb.jpg"
+                    ? styles.thumbnail__active
+                    : ""
+                }`}
+                onClick={() => handleImageSelect}
+              />
+            </div>
             <img
               className={styles.gallery__img}
-              src="https://i.pinimg.com/736x/62/c2/91/62c291988428eb4fd629b54f11da89eb.jpg"
+              src={selectedImage}
               alt={card.title}
             />
           </div>
@@ -63,15 +105,36 @@ const AboutCard = () => {
 
             <p className={styles.details__description}>{card.description}</p>
 
+            <div className={styles.size}>
+              <h3 className={styles.size__title}>
+                Доступные размеры для заказа:
+              </h3>
+              <p className={styles.size__text}>{card.size}</p>
+            </div>
+
+            <div className={styles.buttons}>
+              <button onClick={addInCart} className={styles.buttons__cart}>
+                Добавить в корзину
+              </button>
+              <ReactSVG
+                onClick={addInFavourite}
+                src={favouriteIcon}
+                className={styles.buttons__icon}
+              />
+            </div>
+
             <div className={styles.additional}>
               <div>
                 <button
-                  className={styles.additional__title}
+                  className={`${styles.additional__title} ${
+                    openSection.includes("description") ? styles.open : ""
+                  }`}
                   onClick={() => toggleSection("description")}
                 >
                   Описание и состав:
+                  <span className={styles.arrow} />
                 </button>
-                {openSection === "description" && (
+                {openSection.includes("description") && (
                   <div className={styles.additional__content}>
                     <p>
                       Этот товар изготовлен из высококачественных материалов,
@@ -86,12 +149,15 @@ const AboutCard = () => {
 
               <div>
                 <button
-                  className={styles.additional__title}
+                  className={`${styles.additional__title} ${
+                    openSection.includes("delivery") ? styles.open : ""
+                  }`}
                   onClick={() => toggleSection("delivery")}
                 >
                   Доставка:
+                  <span className={styles.arrow} />
                 </button>
-                {openSection === "delivery" && (
+                {openSection.includes("delivery") && (
                   <ul className={styles.additional__content}>
                     <li>
                       При заказе на сумму от 20 000 руб. — доставка по России
@@ -108,12 +174,15 @@ const AboutCard = () => {
 
               <div>
                 <button
-                  className={styles.additional__title}
+                  className={`${styles.additional__title} ${
+                    openSection.includes("return") ? styles.open : ""
+                  }`}
                   onClick={() => toggleSection("return")}
                 >
                   Возврат:
+                  <span className={styles.arrow} />
                 </button>
-                {openSection === "return" && (
+                {openSection.includes("return") && (
                   <div className={styles.additional__content}>
                     <p>
                       Если товар вам не подошел, вы можете оформить возврат в
@@ -125,12 +194,15 @@ const AboutCard = () => {
 
               <div>
                 <button
-                  className={styles.additional__title}
+                  className={`${styles.additional__title} ${
+                    openSection.includes("care") ? styles.open : ""
+                  }`}
                   onClick={() => toggleSection("care")}
                 >
                   Уход за изделием:
+                  <span className={styles.arrow} />
                 </button>
-                {openSection === "care" && (
+                {openSection.includes("care") && (
                   <ol className={styles.additional__content}>
                     <li>
                       Ручная стирка при температуре не выше 30℃. Не выкручивать.
@@ -145,14 +217,20 @@ const AboutCard = () => {
 
               <div>
                 <button
-                  className={styles.additional__title}
+                  className={`${styles.additional__title} ${
+                    openSection.includes("count") ? styles.open : ""
+                  }`}
                   onClick={() => toggleSection("count")}
                 >
                   В наличие:
+                  <span className={styles.arrow} />
                 </button>
-                {openSection === "count" && (
+                {openSection.includes("count") && (
                   <div className={styles.additional__content}>
-                    <p>{card.price}</p>
+                    <p>
+                      Успейте заказать, пока все не разобрали, осталось всего -{" "}
+                      {card.quantity} штук.
+                    </p>
                   </div>
                 )}
               </div>
