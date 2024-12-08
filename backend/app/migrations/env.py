@@ -12,6 +12,8 @@ from app.cart.models import Cart
 from app.review.models import Review
 from app.category.models import Category
 from app.user.models import User
+from app.payment.models import Payment, Order
+from app.user.role.models import Role
 
 from app.database import Base
 

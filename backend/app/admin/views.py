@@ -2,8 +2,10 @@ from sqladmin import ModelView
 from app.card.models import Card
 from app.cart.models import Cart
 from app.category.models import Category
+from app.payment.models import Order, Payment
 from app.review.models import Review
 from app.user.models import User
+from app.user.role.models import Role
 
 class UserAdmin(ModelView, model=User):
     column_list = [User.id, User.email] + [User.review, User.cart]
@@ -37,3 +39,18 @@ class CartAdmin(ModelView, model=Cart):
     column_list = [c.name for c in Cart.__table__.c] + [Cart.user, Cart.card]
     name = "Корзина"
     name_plural = "Корзины"
+
+class RoleAdmin(ModelView, model=Role):
+    column_list = [c.name for c in Role.__table__.c] + [Cart.user]
+    name = "Роль"
+    name_plural = "Роли"
+
+class OrderAdmin(ModelView, model=Order):
+    column_list = [c.name for c in Order.__table__.c] + [Payment.user]
+    name = "Заказ"
+    name_plural = "Заказы"
+
+class PaymentAdmin(ModelView, model=Payment):
+    column_list = [c.name for c in Payment.__table__.c] + [Order.user]
+    name = "Платеж"
+    name_plural = "Платежи"

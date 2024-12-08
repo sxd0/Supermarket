@@ -1,12 +1,9 @@
--- Очистка таблиц ВОЗМОЖНО УДАЛЕНИЕ
+-- Очистка таблиц
 TRUNCATE TABLE category RESTART IDENTITY CASCADE;
 TRUNCATE TABLE "user" RESTART IDENTITY CASCADE;
 TRUNCATE TABLE card RESTART IDENTITY CASCADE;
 TRUNCATE TABLE cart RESTART IDENTITY CASCADE;
 TRUNCATE TABLE review RESTART IDENTITY CASCADE;
-TRUNCATE TABLE role RESTART IDENTITY CASCADE;
-TRUNCATE TABLE payment RESTART IDENTITY CASCADE;
-TRUNCATE TABLE "order" RESTART IDENTITY CASCADE;
 TRUNCATE TABLE alembic_version RESTART IDENTITY CASCADE;
 
 -- Вставка данных в таблицу category
@@ -22,21 +19,13 @@ INSERT INTO category (title) VALUES
 ('Свитеры'),
 ('Штаны');
 
--- Вставка данных в таблицу role
-INSERT INTO role (name) VALUES
-('Guest'),
-('Admin');
-
 -- Вставка данных в таблицу user
-INSERT INTO "user" (email, hashed_password, name, surname, favourite, role_id) VALUES
-('alice@example.com', 'hashed_password_1', 'Алиса', 'Смит', ARRAY[1, 2, 3], 1),
-('bob@example.com', 'hashed_password_2', 'Боб', 'Джонсон', ARRAY[4, 5], 1),
-('charlie@example.com', 'hashed_password_3', 'Чарли', 'Браун', ARRAY[6], 1),
-('diana@example.com', 'hashed_password_4', 'Диана', 'Принс', ARRAY[7, 8, 9], 1),
-('eve@example.com', 'hashed_password_5', 'Ева', 'Адамс', ARRAY[10], 1),
-('admin@123.com', '$2b$12$XtDkgCKTZSuebR/3vx267OtXGbblJzmPeGPeFXJYwenUONGzlgNoO', 'Кирюха', 'Аксенов', ARRAY[10], 2);
-
-
+INSERT INTO "user" (email, hashed_password, name, surname, favourite, is_admin) VALUES
+('alice@example.com', 'hashed_password_1', 'Алиса', 'Смит', ARRAY[1, 2, 3], FALSE),
+('bob@example.com', 'hashed_password_2', 'Боб', 'Джонсон', ARRAY[4, 5], FALSE),
+('charlie@example.com', 'hashed_password_3', 'Чарли', 'Браун', ARRAY[6], FALSE),
+('diana@example.com', 'hashed_password_4', 'Диана', 'Принс', ARRAY[7, 8, 9], FALSE),
+('eve@example.com', 'hashed_password_5', 'Ева', 'Адамс', ARRAY[10], FALSE);
 
 -- Вставка данных в таблицу card
 INSERT INTO card (title, price, size, gender, category_id, quantity, description, sale, new, popular, image) VALUES

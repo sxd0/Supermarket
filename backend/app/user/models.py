@@ -1,4 +1,4 @@
-from sqlalchemy import ARRAY, Boolean, Column, Integer, String
+from sqlalchemy import ARRAY, Boolean, Column, ForeignKey, Integer, String
 from app.database import Base
 from sqlalchemy.orm import relationship
 
@@ -11,10 +11,12 @@ class User(Base):
     name = Column(String, nullable=False)
     surname = Column(String, nullable=False)
     favourite = Column(ARRAY(Integer), default=[]) # Возможно буду менять и создавать отдельную таблицу)
-    is_admin = Column(Boolean, nullable=False)
+    role_id = Column(Integer, ForeignKey("role.id"))
 
+    role = relationship("Role", back_populates="user")
     review = relationship("Review", back_populates="user")
-    
+    payment = relationship("Payment", back_populates="user")
+    order = relationship("Order", back_populates="user")
     cart = relationship("Cart", back_populates="user")
 
     def __str__(self):

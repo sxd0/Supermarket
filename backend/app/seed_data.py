@@ -9,7 +9,7 @@ DB_PASS = os.getenv("DB_PASSWORD", "postgres")
 DB_NAME = os.getenv("DB_NAME", "aks_db")
 
 
-async def seed_data():
+async def check_and_seed_data():
     conn = await asyncpg.connect(
         host=DB_HOST,
         port=DB_PORT,
@@ -19,17 +19,21 @@ async def seed_data():
     )
 
     try:
-        # Чтение и выполнение скрипта seed_data.sql
-        with open("seed_data.sql", "r", encoding="utf-8") as f:
-            sql_script = f.read()
-
-        await conn.execute(sql_script)
-        print("Database seeded successfully.")
+        # Проверка существования данных
+        category_count = await conn.fetchval("SELECT COUNT(*) FROM category;")
+        if category_count > 0:
+            print("Database already has data. Skipping seeding.")
+        else:
+            print("Database is empty. Seeding data...")
+            with open("seed_data.sql", "r", encoding="utf-8") as f:
+                sql_script = f.read()
+            await conn.execute(sql_script)
+            print("Database seeded successfully.")
     except Exception as e:
-        print(f"Error seeding data: {e}")
+        print(f"Error during seeding: {e}")
     finally:
         await conn.close()
 
 
 if __name__ == "__main__":
-    asyncio.run(seed_data())
+    asyncio.run(check_and_seed_data())

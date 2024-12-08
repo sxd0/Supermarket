@@ -5,17 +5,24 @@ from starlette.responses import RedirectResponse
 
 from app.user.auth import authenticate_user, create_access_token
 from app.user.dependencies import get_current_user
+from app.user.role.dao import RoleDAO
+
 
 class AdminAuth(AuthenticationBackend):
     async def login(self, request: Request) -> bool:
         form = await request.form()
         email, password = form["username"], form["password"]
 
+        # Аутентификация пользователя
         user = await authenticate_user(email, password)
-        if user and user.is_admin:
-            access_token = create_access_token({"sub": str(user.id)})
-            request.session.update({"token": access_token})
-            return True
+        if user:
+            # Проверяем, имеет ли пользователь роль "admin"
+            role = await RoleDAO.find_one_or_none(id=user.role_id)
+            if role and role.name == "Admin":
+                access_token = create_access_token({"sub": str(user.id)})
+                request.session.update({"token": access_token})
+                print(1)
+                return True
         return False
 
     async def logout(self, request: Request) -> bool:
@@ -24,11 +31,18 @@ class AdminAuth(AuthenticationBackend):
 
     async def authenticate(self, request: Request) -> Optional[RedirectResponse]:
         token = request.session.get("token")
+
         if not token:
             return RedirectResponse(request.url_for("admin:login"), status_code=302)
+
         user = await get_current_user(token)
-        if not user or not user.is_admin:
+        if not user:
             return RedirectResponse(request.url_for("admin:login"), status_code=302)
+
+        role = await RoleDAO.find_one_or_none(id=user.role_id)
+        if not role or role.name != "Admin":
+            return RedirectResponse(request.url_for("admin:login"), status_code=302)
+
         return True
 
 authentication_backend = AdminAuth(secret_key="...")
