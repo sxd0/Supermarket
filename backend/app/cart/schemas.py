@@ -3,9 +3,9 @@ from pydantic import BaseModel, ConfigDict
 
 class SCart(BaseModel):
     id: int
-    user_id: str
+    user_id: int
     card_id: int
-    quantity: int
+    quantity: int = 1
 
 
     class Config:
