@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 
 from app.card.dao import CardDAO
 from app.card.models import Card
+from app.card.schemas import SCard
 from app.user.dependencies import get_current_user
 from app.user.models import User
 
@@ -17,7 +18,7 @@ async def get_card(): # Получение всех товаров
     return await CardDAO.find_all()
 
 @router.get("/new") # Получение всех новых товаров
-async def get_new_card():
+async def get_new_card() -> SCard:
     return await CardDAO.find_all(new = True)
 
 @router.get("/{card_id}") # Получени одного товара по id

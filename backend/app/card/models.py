@@ -15,7 +15,7 @@ class Card(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     title = Column(String, nullable=False)
     price = Column(Integer, nullable=False)
-    size = Column(String, nullable=False)
+    size = Column(ARRAY(String), nullable=False) #
     gender = Column(String, nullable=False)
     category_id = Column(ForeignKey("category.id"), nullable=False)
     quantity = Column(Integer, nullable=False)
