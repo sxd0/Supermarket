@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import BreadCrumbs from "../../components/BreadCrumbs";
 import styles from "./index.module.scss";
 import type { Catalog } from "../../Types/catalogType";
-import { Card } from "../../Types/cardType";
+import { Card, CardGender } from "../../Types/cardType";
 import ProductCard from "../../components/ProductCard";
 
 const CatalogMale = () => {
@@ -103,7 +103,7 @@ const CatalogMale = () => {
           <section className={styles.cards}>
             {cards.map(
               (item) =>
-                item.gender === "male" && (
+                item.gender === CardGender.MALE && (
                   <div key={item.id}>
                     <ProductCard {...item} />
                   </div>

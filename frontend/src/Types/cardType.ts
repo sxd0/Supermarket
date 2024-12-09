@@ -12,3 +12,8 @@ export interface Card {
   popular: boolean;
   image: string;
 }
+
+export enum CardGender {
+  FEMALE = "female",
+  MALE = "male",
+}
