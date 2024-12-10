@@ -8,7 +8,7 @@ class CardDAO(BaseDAO):
     model = Card
 
     @classmethod
-    async def find_all(cls, skip: int = 0, limit: int = 10, new: bool = None, popular: bool = None, sale: int = None):
+    async def find_all_modified(cls, skip: int = 0, limit: int = 10, new: bool = None, popular: bool = None, sale: int = None):
         async with async_session_maker() as session:
             query = select(cls.model.__table__.columns)
             if new is not None:

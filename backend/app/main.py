@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+import time
+from fastapi import FastAPI, Request
 from sqladmin import Admin
 from app.admin.views import CardAdmin, CartAdmin, CategoryAdmin, OrderAdmin, PaymentAdmin, ReviewAdmin, RoleAdmin, UserAdmin
 from app.user.router import router as router_user
@@ -11,9 +12,10 @@ from app.user.role.router import router as router_role
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine
 from app.admin.auth import authentication_backend
+from app.logger import logger
 
 # Экземпляр приложения
-app = FastAPI() 
+app = FastAPI()
 
 # Добавляем роутеры
 app.include_router(router_user)
@@ -35,7 +37,8 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
-    allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"]
+    allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers",
+                   "Access-Control-Allow-Origin", "Authorization"]
 )
 
 admin = Admin(app, engine, authentication_backend=authentication_backend)
@@ -48,3 +51,14 @@ admin.add_view(CartAdmin)
 admin.add_view(RoleAdmin)
 admin.add_view(PaymentAdmin)
 admin.add_view(OrderAdmin)
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.perf_counter()
+    response = await call_next(request)
+    process_time = time.perf_counter() - start_time
+    logger.info("Request execution time", extra={
+        "process_time": round(process_time, 4)
+    })
+    return response

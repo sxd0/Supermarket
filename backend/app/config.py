@@ -2,6 +2,8 @@ from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
+    LOG_LEVEL: str
+
     DB_HOST: str
     DB_PORT: int
     DB_USER: str
@@ -21,6 +23,8 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
     
+
+
     class Config:
         env_file = ".env"
 

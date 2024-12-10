@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends
 
 from app.card.dao import CardDAO
@@ -18,7 +19,7 @@ router = APIRouter(
 #     return await CartDAO.find_all()
 
 @router.get("") # Получение корзины для пользователя
-async def get_cart_for_user(user: User = Depends(get_current_user)):
+async def get_cart_for_user(user: User = Depends(get_current_user)) -> list[SCart]:
     return await CartDAO.find_all(user_id=user.id)
 
 

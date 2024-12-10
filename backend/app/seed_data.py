@@ -1,6 +1,7 @@
 import asyncio
 import asyncpg
 import os
+# from app.config import settings
 
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = os.getenv("DB_PORT", "5432")
@@ -8,6 +9,11 @@ DB_USER = os.getenv("DB_USER", "postgres")
 DB_PASS = os.getenv("DB_PASSWORD", "postgres")
 DB_NAME = os.getenv("DB_NAME", "aks_db")
 
+# DB_HOST = settings.DB_HOST
+# DB_PORT = settings.DB_PORT
+# DB_USER = settings.DB_USER
+# DB_PASS = settings.DB_PASS
+# DB_NAME = settings.DB_NAME
 
 async def check_and_seed_data():
     conn = await asyncpg.connect(
