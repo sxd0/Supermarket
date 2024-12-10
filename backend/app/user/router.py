@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends, Response, status, HTTPException
 from jose import JWTError, jwt
 
@@ -98,6 +99,52 @@ async def logout_user(response: Response):
 @router.get("/me")
 async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.get("/favoutires")
+async def read_favourites_from_user(current_user: User = Depends(get_current_user)):
+    return current_user.favourite
+
+@router.post("/favourites/add")
+async def add_favourites_for_card(
+    favourite: int,
+    user: User = Depends(get_current_user),
+):
+    user_data = await UserDAO.find_one_or_none(id=user.id)
+    if user_data is None:
+        raise HTTPException(status_code=404, detail="User  not found")
+
+    if favourite in user_data.favourite:
+        raise HTTPException(status_code=400, detail="Card already in favourites")
+
+    user_data.favourite.append(favourite)
+
+    await UserDAO.update(filter_by={'id': user.id}, favourite=user_data.favourite)
+
+    return user_data.favourite
+
+
+@router.delete("/favourites/remove")
+async def remove_favourites_for_card(
+    favourite: int,
+    user: User = Depends(get_current_user),
+):
+    user_data = await UserDAO.find_one_or_none(id=user.id)
+    if user_data is None:
+        raise HTTPException(status_code=404, detail="User  not found")
+
+    if favourite not in user_data.favourite:
+        raise HTTPException(status_code=400, detail="Card not in favourites")
+
+    user_data.favourite.remove(favourite)
+
+    await UserDAO.update(filter_by={'id': user.id}, favourite=user_data.favourite)
+
+    return user_data.favourite
+
+
+
+
 
 # @router.get("/all")
 # async def read_users_all(current_user: User = Depends(get_current_user)):
