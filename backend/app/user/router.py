@@ -96,9 +96,9 @@ async def refresh_token(response: Response, refresh_token: str = Depends(get_ref
 async def logout_user(response: Response):
     response.delete_cookie("access_token")
 
-@router.get("/me")
-async def read_users_me(current_user: User = Depends(get_current_user)):
-    return current_user
+# @router.get("/me")
+# async def read_users_me(current_user: User = Depends(get_current_user)):
+#     return current_user
 
 
 @router.get("/favoutires")
@@ -150,28 +150,6 @@ async def remove_favourites_for_card(
 # async def read_users_all(current_user: User = Depends(get_current_user)):
 #     return await UserDAO.find_all()
 
-@router.get("/all")
-async def read_users_all():
-    return await UserDAO.find_all()
-
-"""
-GET /users/{id}
-Получение информации о пользователе.
-Описание: Возвращает данные пользователя (имя, email, роль).
-
-GET /users/{id}
-Получение информации о себе для пользователя. *
-Описание: Возвращает данные пользователя (имя, email).
-
-POST /users
-Создание нового пользователя.
-Описание: Регистрация нового пользователя.
-
-POST /login
-Вход для авторизованного пользователя
-Описание: Вход
-
-GET /users/{id}/reviews
-Получение всех отзывов пользователя.
-Описание: Возвращает список отзывов, оставленных пользователем.
-"""
+# @router.get("/all")
+# async def read_users_all():
+#     return await UserDAO.find_all()

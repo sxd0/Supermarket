@@ -41,13 +41,3 @@ async def remove_reviews(
 @router.get("/{card_id}") # Получение всех отзывов на товар
 async def get_reviews_card(card_id: int):
     return await ReviewDAO.find_all(card_id = card_id)
-
-"""
-POST /reviews
-Создание нового отзыва. Для пользователя
-Описание: Пользователь добавляет отзыв на товар.
-
-DELETE /reviews/{id}. Для пользователя
-Удаление отзыва.
-Описание: Удаляет отзыв по идентификатору.
-"""

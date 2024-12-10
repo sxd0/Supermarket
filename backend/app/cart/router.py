@@ -13,9 +13,9 @@ router = APIRouter(
 )
 
 
-@router.get("/all")
-async def read_cart_all():
-    return await CartDAO.find_all()
+# @router.get("/all")
+# async def read_cart_all():
+#     return await CartDAO.find_all()
 
 @router.get("") # Получение корзины для пользователя
 async def get_cart_for_user(user: User = Depends(get_current_user)):
@@ -46,17 +46,3 @@ async def update_card_quantity_in_cart(
 ):
     await CartDAO.update(filter_by={'id': cart_id, 'user_id': current_user.id}, quantity=new_quantity)
     
-
-"""
-GET /cart/{user_id}
-Получение корзины пользователя.
-Описание: Возвращает товары, добавленные в корзину.
-
-POST /cart
-Добавление товара в корзину.
-Описание: Добавляет товар в корзину пользователя.
-
-DELETE /cart/{user_id}/{card_id}
-Удаление товара из корзины.
-Описание: Удаляет указанный товар из корзины пользователя.
-"""
