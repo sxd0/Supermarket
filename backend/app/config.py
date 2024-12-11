@@ -2,7 +2,7 @@ from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    LOG_LEVEL: str
+    LOG_LEVEL: str = "INFO"
 
     DB_HOST: str
     DB_PORT: int
