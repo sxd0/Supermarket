@@ -2,10 +2,7 @@ from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    LOG_LEVEL: str = "INFO"
-    VK_CLIENT_ID: str
-    VK_CLIENT_SECRET: str
-    VK_REDIRECT_URI: str
+    LOG_LEVEL: str
 
     DB_HOST: str
     DB_PORT: int
