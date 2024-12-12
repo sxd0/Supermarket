@@ -6,6 +6,7 @@ class User(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    vk_id = Column(Integer, unique=True, nullable=True) # new
     email = Column(String, nullable=False)
     hashed_password = Column(String, nullable=False)
     name = Column(String, nullable=False)
@@ -21,5 +22,3 @@ class User(Base):
 
     def __str__(self):
         return f"{self.email}"
-
-# Добавить историю транзакций (отдельная таблица)

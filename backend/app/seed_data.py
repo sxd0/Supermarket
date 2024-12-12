@@ -44,5 +44,5 @@ async def check_and_seed_data():
 if __name__ == "__main__":
     asyncio.run(check_and_seed_data())
 
-#DROP SCHEMA public CASCADE;
-#CREATE SCHEMA public;
+# DROP SCHEMA public CASCADE;
+# CREATE SCHEMA public;

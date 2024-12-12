@@ -2,10 +2,11 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, condecimal
 
 class SPayment(BaseModel):
+    id: int
     order_id: int
     user_id: int
-    amount: int = condecimal(max_digits=10, decimal_places=2)
     status: str | None = None
+    amount: int = condecimal(max_digits=10, decimal_places=2)
     created_at: datetime | None = None
 
     class Config:
@@ -20,3 +21,4 @@ class SOrder(BaseModel):
 
     class Config:
         model_config = ConfigDict(from_attributes=True)
+

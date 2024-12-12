@@ -13,6 +13,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine
 from app.admin.auth import authentication_backend
 from app.logger import logger
+from starlette.middleware.sessions import SessionMiddleware
+from app.config import settings
+
 
 # Экземпляр приложения
 app = FastAPI()
@@ -41,16 +44,7 @@ app.add_middleware(
                    "Access-Control-Allow-Origin", "Authorization"]
 )
 
-admin = Admin(app, engine, authentication_backend=authentication_backend)
 
-admin.add_view(UserAdmin)
-admin.add_view(CardAdmin)
-admin.add_view(ReviewAdmin)
-admin.add_view(CategoryAdmin)
-admin.add_view(CartAdmin)
-admin.add_view(RoleAdmin)
-admin.add_view(PaymentAdmin)
-admin.add_view(OrderAdmin)
 
 
 @app.middleware("http")
@@ -62,3 +56,17 @@ async def add_process_time_header(request: Request, call_next):
         "process_time": round(process_time, 4)
     })
     return response
+
+
+# app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY) Ломает админку
+
+admin = Admin(app, engine, authentication_backend=authentication_backend)
+
+admin.add_view(UserAdmin)
+admin.add_view(CardAdmin)
+admin.add_view(ReviewAdmin)
+admin.add_view(CategoryAdmin)
+admin.add_view(CartAdmin)
+admin.add_view(RoleAdmin)
+admin.add_view(PaymentAdmin)
+admin.add_view(OrderAdmin)

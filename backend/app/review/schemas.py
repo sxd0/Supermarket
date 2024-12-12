@@ -11,3 +11,9 @@ class SReview(BaseModel):
 
     class Config:
         model_config = ConfigDict(from_attributes=True)
+
+
+class SReviewAdd(BaseModel):
+    stars: int | None
+    description: str
+    card_id: int

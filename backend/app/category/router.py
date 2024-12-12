@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from app.category.dao import CategoryDAO
+from app.category.schemas import SCategory
 
 router = APIRouter(
     prefix="/category",
@@ -8,7 +9,7 @@ router = APIRouter(
 
 
 @router.get("")
-async def get_categories():
+async def get_categories() -> list[SCategory]:
     return await CategoryDAO.find_all()
 
 

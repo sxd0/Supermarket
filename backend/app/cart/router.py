@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 
 from app.card.dao import CardDAO
 from app.cart.dao import CartDAO
-from app.cart.schemas import SCart
+from app.cart.schemas import SCart, SCartCreate
 from app.user.dependencies import get_current_user
 from app.user.models import User
 
@@ -25,11 +25,18 @@ async def get_cart_for_user(user: User = Depends(get_current_user)) -> list[SCar
 
 @router.post("")
 async def add_card_in_cart(
-    card_id: int,
-    quantity: int = 1,
+    cart_data: SCartCreate,
     user: User = Depends(get_current_user),
 ):
-    card_cart = await CartDAO.add(user_id=user.id, card_id=card_id, quantity=quantity)
+    existing_cart_item = await CartDAO.find_one_or_none(user_id=user.id, card_id=cart_data.card_id)
+    if existing_cart_item:
+        new_quantity = existing_cart_item.quantity + cart_data.quantity
+        await CartDAO.update(filter_by={'id': existing_cart_item.id, 'user_id': user.id}, quantity=new_quantity)
+
+    else:
+        # Если товара нет, добавляем новый
+        await CartDAO.add(user_id=user.id, card_id=cart_data.card_id, quantity=cart_data.quantity)
+
 
 @router.delete("")
 async def remove_card_from_cart(
