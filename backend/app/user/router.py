@@ -1,6 +1,8 @@
 import json
 from typing import List
 from fastapi import APIRouter, Depends, Request, Response, requests, status, HTTPException
+from fastapi.responses import RedirectResponse
+import httpx
 from jose import JWTError, jwt
 
 from app.config import settings
@@ -17,70 +19,83 @@ router = APIRouter(
     tags=["Auth & Пользователи"],
 )
 
-# # Инициализация OAuth
-# oauth = OAuth()
-# oauth.register(
-#     name="vk",
-#     client_id=settings.VK_CLIENT_ID,
-#     client_secret=settings.VK_CLIENT_SECRET,
-#     authorize_url="https://oauth.vk.com/authorize",
-#     access_token_url="https://oauth.vk.com/access_token",
-#     client_kwargs={"scope": "email"}
-# )
+@router.get("/vk/auth-url")
+async def get_vk_auth_url():
+    vk_auth_url = (
+        f"https://oauth.vk.com/authorize?client_id={settings.VK_CLIENT_ID}&redirect_uri={settings.VK_REDIRECT_URI}"
+        f"&response_type=code&v=5.131"
+    )
+    return {"auth_url": vk_auth_url, "test": settings.VK_REDIRECT_URI}
 
-# VK_API_BASE = "https://api.vk.com/method"
+@router.get("/vk/callback")
+async def vk_callback(request: Request, response: Response):
+    code = request.query_params.get("code")
+    if not code:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Authorization code not found"
+        )
 
+    token_url = "https://oauth.vk.com/access_token"
+    token_data = {
+        "client_id": settings.VK_CLIENT_ID,
+        "client_secret": settings.VK_CLIENT_SECRET,
+        "redirect_uri": settings.VK_REDIRECT_URI,
+        "code": code,
+    }
 
-# @router.get("/auth/vk/login")
-# async def vk_login(request: Request):
-#     redirect_uri = "http://localhost:8000/auth/vk/callback"
-#     return await oauth.vk.authorize_redirect(request, redirect_uri)
+    async with httpx.AsyncClient() as client:
+        token_response = await client.post(token_url, data=token_data)
+        if token_response.status_code != 200:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Failed to get access token",
+            )
+        token_info = token_response.json()
 
+    if "access_token" in token_info:
+        access_token = token_info["access_token"]
+        user_id = token_info["user_id"]
 
-# @router.get("/callback")
-# async def vk_callback(code: str):
-#     """
-#     Обработчик коллбэка после авторизации через ВКонтакте.
-#     """
-#     # Получение access_token от ВКонтакте
-#     token_url = (
-#         f"https://oauth.vk.com/access_token"
-#         f"?client_id={settings.VK_APP_ID}&client_secret={settings.VK_APP_SECRET}"
-#         f"&redirect_uri={settings.VK_REDIRECT_URI}&code={code}"
-#     )
-#     token_response = requests.get(token_url).json()
+        user_info_url = "https://api.vk.com/method/users.get"
+        params = {
+            "access_token": access_token,
+            "user_ids": user_id,
+            "v": "5.131",
+        }
 
-#     if "access_token" not in token_response:
-#         raise HTTPException(status_code=400, detail="Ошибка при получении токена.")
+        async with httpx.AsyncClient() as client:
+            user_info_response = await client.get(user_info_url, params=params)
+            user_info = user_info_response.json()
 
-#     access_token = token_response["access_token"]
-#     vk_user_id = token_response["user_id"]
+        if "response" in user_info and user_info["response"]:
+            user_data = user_info["response"][0]
+            user_id = user_data["id"]
 
-#     # Получение данных пользователя через API ВКонтакте
-#     user_info_url = (
-#         f"https://api.vk.com/method/users.get"
-#         f"?user_ids={vk_user_id}&fields=first_name,last_name"
-#         f"&access_token={access_token}&v=5.131"
-#     )
-#     user_info_response = requests.get(user_info_url).json()
+            user = await UserDAO.find_one_or_none(vk_id=user_id)
+            if not user:
+                await UserDAO.add(
+                    vk_id=user_id,
+                    email=f"vk_{user_id}@example.com",
+                    hashed_password="",
+                    name=user_data.get("first_name", "VK User"),
+                    surname=user_data.get("last_name", ""),
+                )
+                user = await UserDAO.find_one_or_none(vk_id=user_id)
 
-#     if "response" not in user_info_response:
-#         raise HTTPException(status_code=400, detail="Ошибка при получении данных пользователя.")
+            access_token = create_access_token({"sub": str(user.id)})
+            refresh_token = create_refresh_token({"sub": str(user.id)})
+            response.set_cookie("access_token", access_token, httponly=True)
+            response.set_cookie("refresh_token", refresh_token, httponly=True)
 
-#     user_info = user_info_response["response"][0]
-#     vk_user_data = {
-#         "vk_id": vk_user_id,
-#         "first_name": user_info.get("first_name"),
-#         "last_name": user_info.get("last_name"),
-#     }
-
-#     # Проверяем, существует ли пользователь в базе
-#     existing_user = await UserDAO.find_one_or_none(vk_id=vk_user_data["vk_id"])
-#     if not existing_user:
-#         # Создаем нового пользователя
-#         await UserDAO.add(**vk_user_data)
-
-#     return {"message": "Успешная авторизация через ВКонтакте.", "user": vk_user_data}
+            return {"message": "Successfully authenticated", "user_id": user_id}
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get user info"
+            )
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get access token"
+        )
 
 
 @router.post("/register")
@@ -108,25 +123,6 @@ async def login_user(response: Response, user_data: SUserLogin):
     response.set_cookie("access_token", access_token, httponly=True)
     response.set_cookie("refresh_token", refresh_token, httponly=True)
     return user
-
-# обновления access токена с использованием refresh токена (((НЕ ХВАТАЕТ УДАЛЕНИЕ КУКИ)))
-# @router.post("/refresh")
-# async def refresh_token(response: Response, refresh_token: str = Depends(get_token)):
-#     try:
-#         payload = jwt.decode(refresh_token, settings.SECRET_KEY, settings.ALGORITHM)
-#     except JWTError:
-#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-
-#     user_id: str = payload.get("sub")
-#     if not user_id:
-#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-#     user = await UserDAO.find_one_or_none(id=int(user_id))
-#     if not user:
-#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-
-#     access_token = create_access_token({"sub": str(user.id)})
-#     response.set_cookie("access_token", access_token, httponly=True)
-#     return {"access_token": access_token}
 
 @router.post("/refresh")
 async def refresh_token(response: Response, refresh_token: str = Depends(get_refresh_token)):
@@ -162,10 +158,11 @@ async def refresh_token(response: Response, refresh_token: str = Depends(get_ref
 @router.post("/logout")
 async def logout_user(response: Response):
     response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
 
-# @router.get("/me")
-# async def read_users_me(current_user: User = Depends(get_current_user)):
-#     return current_user
+@router.get("/me")
+async def read_users_me(current_user: User = Depends(get_current_user)):
+    return current_user
 
 
 @router.get("/favoutires")
@@ -217,6 +214,6 @@ async def remove_favourites_for_card(
 # async def read_users_all(current_user: User = Depends(get_current_user)):
 #     return await UserDAO.find_all()
 
-# @router.get("/all")
-# async def read_users_all():
-#     return await UserDAO.find_all()
+@router.get("/all")
+async def read_users_all():
+    return await UserDAO.find_all()

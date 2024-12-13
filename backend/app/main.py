@@ -58,8 +58,6 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 
-# app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY) Ломает админку
-
 admin = Admin(app, engine, authentication_backend=authentication_backend)
 
 admin.add_view(UserAdmin)
