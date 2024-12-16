@@ -10,7 +10,7 @@ from app.user.role.models import Role
 class UserAdmin(ModelView, model=User):
     column_list = [User.id, User.email] + [User.review, User.cart]
     column_details_exclude_list = [User.hashed_password]
-    can_delete = False
+    # can_delete = False
     name = "Пользователь"
     name_plural = "Пользователи"
     icon = "fa-solid fa-user"

@@ -1,0 +1,26 @@
+[
+    {
+        "email": "alice@example.com",
+        "hashed_password": "hashed_password_1",
+        "name": "Алиса",
+        "surname": "Смит",
+        "favourite": [1, 2, 3],
+        "role_id": 1
+    },
+    {
+        "email": "admin@123.com",
+        "hashed_password": "$2b$12$XtDkgCKTZSuebR/3vx267OtXGbblJzmPeGPeFXJYwenUONGzlgNoO",
+        "name": "Кирюха",
+        "surname": "Аксенов",
+        "favourite": [],
+        "role_id": 2
+    },
+    {
+        "email": "user3@example.com",
+        "hashed_password": "hashed_password_3",
+        "name": "Иван",
+        "surname": "Иванов",
+        "favourite": [],
+        "role_id": 1
+    }
+]

@@ -23,9 +23,9 @@ router = APIRouter(
 async def get_vk_auth_url():
     vk_auth_url = (
         f"https://oauth.vk.com/authorize?client_id={settings.VK_CLIENT_ID}&redirect_uri={settings.VK_REDIRECT_URI}"
-        f"&response_type=code&v=5.131"
+        f"&response_type=code&v=5.131&scope=email"
     )
-    return {"auth_url": vk_auth_url, "test": settings.VK_REDIRECT_URI}
+    return {"auth_url": vk_auth_url}
 
 @router.get("/vk/callback")
 async def vk_callback(request: Request, response: Response):
@@ -55,7 +55,7 @@ async def vk_callback(request: Request, response: Response):
     if "access_token" in token_info:
         access_token = token_info["access_token"]
         user_id = token_info["user_id"]
-
+        email = token_info.get("email")
         user_info_url = "https://api.vk.com/method/users.get"
         params = {
             "access_token": access_token,
@@ -75,7 +75,7 @@ async def vk_callback(request: Request, response: Response):
             if not user:
                 await UserDAO.add(
                     vk_id=user_id,
-                    email=f"vk_{user_id}@example.com",
+                    email=email or f"vk_{user_id}@example.com",
                     hashed_password="",
                     name=user_data.get("first_name", "VK User"),
                     surname=user_data.get("last_name", ""),
@@ -87,7 +87,7 @@ async def vk_callback(request: Request, response: Response):
             response.set_cookie("access_token", access_token, httponly=True)
             response.set_cookie("refresh_token", refresh_token, httponly=True)
 
-            return {"message": "Successfully authenticated", "user_id": user_id}
+            return {"message": "Successfully authenticated", "user_id": user_id, "email": email}
         else:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get user info"
