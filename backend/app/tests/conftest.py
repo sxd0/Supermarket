@@ -61,15 +61,15 @@ async def ac():
 @pytest.fixture(scope="session")
 async def authenticated_ac():
     async with AsyncClient(app=fastapi_app, base_url="http://test") as ac:
-        await ac.post("auth/login", json={
-            "email": "test@test.com",
-            "password": "test",
+        await ac.post("/auth/login", json={
+            "email": "admin@123.com",
+            "password": "123",
         })
         assert ac.cookies["access_token"]
         yield ac
 
 @pytest.fixture(scope="session")
-def event_loop(request):
+def event_loop():
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()

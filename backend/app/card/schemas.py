@@ -16,5 +16,4 @@ class SCard(BaseModel):
     popular: bool | None = None
     image: str
 
-    class Config:
-        model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)

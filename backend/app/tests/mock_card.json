@@ -8,7 +8,7 @@
         "quantity": 50,
         "description": "Удобная и стильная женская футболка для повседневной носки. Она обеспечит комфорт и поддержку при ходьбе.",
         "sale": null,
-        "new": false,
+        "new": true,
         "popular": false,
         "image": "https://i.pinimg.com/736x/21/84/13/218413e224d8336b9f915dad7a28b0d5.jpg"
     },
@@ -281,7 +281,7 @@
         "quantity": 40,
         "description": "Стильные женские джинсы скинни, которые подчеркнут вашу индивидуальность. Они идеально подойдут для повседневной носки и вечерних мероприятий.",
         "sale": 500,
-        "new": false,
+        "new": true,
         "popular": true,
         "image": "https://i.pinimg.com/736x/d7/25/b6/d725b6afa22ebd414b59e923e6b734da.jpg"
     },
