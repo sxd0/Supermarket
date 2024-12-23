@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "../../Types/authType";
-import { fetchWithAuth } from "../../utils/refresh";
+import axios from "axios";
 
 interface UserState {
   user: User | null;
@@ -46,17 +46,21 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await fetchWithAuth("http://127.0.0.1:8080/auth/login", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await axios.post(
+        "http://127.0.0.1:8080/auth/login",
+        { email, password },
+        {
+          method: "POST",
+          withCredentials: true,
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
 
-      if (response.ok) return await response.json();
-      else return rejectWithValue("Ошибка авторизации");
+      if (response.status === 200) {
+        return await response.data;
+      } else return rejectWithValue("Ошибка авторизации");
     } catch (error) {
       return rejectWithValue("Ошибка авторизации");
     }
@@ -67,19 +71,20 @@ export const logoutUser = createAsyncThunk(
   "user/logoutUser",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchWithAuth(
+      const response = await axios.post(
         "http://127.0.0.1:8080/auth/logout",
+        {},
         {
-          method: "POST",
-          credentials: "include",
+          withCredentials: true,
           headers: {
             "Content-type": "application/json",
           },
         }
       );
 
-      if (response.ok) return await response.json();
-      else return rejectWithValue("Ошибка авторизации");
+      if (response.status) {
+        return await response.data;
+      } else return rejectWithValue("Ошибка авторизации");
     } catch (error) {
       return rejectWithValue("Ошибка авторизации");
     }

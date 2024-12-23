@@ -7,29 +7,30 @@ import { ReactSVG } from "react-svg";
 import favouriteIcon from "../../assets/svg/favourite.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import axios from "axios";
 
 const AboutCard = () => {
   const { id } = useParams<string>();
+  const { user } = useSelector((state: RootState) => state.user);
+
   const [card, setCard] = useState<Card | null>(null);
   const [openSection, setOpenSection] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<string>("");
-  const { user } = useSelector((state: RootState) => state.user);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCard = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8080/card/${id}`, {
-          method: "GET",
-          credentials: "include",
+        const response = await axios.get(`http://127.0.0.1:8080/card/${id}`, {
+          withCredentials: true,
           headers: {
             "Content-type": "application/json",
           },
         });
 
-        if (response.ok) {
-          const data = await response.json();
+        if (response.status === 200) {
+          const data = await response.data;
           setCard(data);
           setSelectedImage(data.image);
         }
@@ -41,8 +42,29 @@ const AboutCard = () => {
     fetchCard();
   }, [id]);
 
-  const addInCart = () => {
+  const addInCart = async () => {
     if (!user) return navigate("/profile");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/cart",
+        {
+          card_id: card?.id,
+          quantity: 1,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200)
+        console.log(`Товар ${card?.title} добавлен в корзину`);
+    } catch (error) {
+      console.log("Ошибка добавления товара в корзину", error);
+    }
   };
 
   const addInFavourite = () => {
@@ -103,8 +125,10 @@ const AboutCard = () => {
                 Доступные размеры для заказа:
               </h3>
               <div className={styles.size__section}>
-                {card.size.map((item) => (
-                  <p className={styles.size__text}>{item}</p>
+                {card.size.map((item, index) => (
+                  <p key={index} className={styles.size__text}>
+                    {item}
+                  </p>
                 ))}
               </div>
             </div>

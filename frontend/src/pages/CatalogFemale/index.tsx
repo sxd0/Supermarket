@@ -70,7 +70,7 @@ const CatalogFemale = () => {
       link: "/",
     },
     {
-      id: 1,
+      id: 2,
       title: "Каталог",
       link: "#",
     },

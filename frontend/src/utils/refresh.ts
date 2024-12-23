@@ -6,7 +6,7 @@ export const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
 
   if (response.ok) {
     return response;
-  } else if (response.status === 401) {
+  } else if (response.status === 400) {
     const refreshed = await refreshAccessToken();
     if (refreshed) {
       return fetch(url, {
