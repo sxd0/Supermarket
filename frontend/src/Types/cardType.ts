@@ -5,7 +5,7 @@ export interface Card {
   category_id: number;
   quantity: number | null;
   description: string;
-  size: string;
+  size: Array<string>;
   gender: string;
   sale: number | null;
   new: boolean;

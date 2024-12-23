@@ -102,7 +102,11 @@ const AboutCard = () => {
               <h3 className={styles.size__title}>
                 Доступные размеры для заказа:
               </h3>
-              {/* <p className={styles.size__text}>{card.size}</p> */}
+              <div className={styles.size__section}>
+                {card.size.map((item) => (
+                  <p className={styles.size__text}>{item}</p>
+                ))}
+              </div>
             </div>
 
             <div className={styles.buttons}>

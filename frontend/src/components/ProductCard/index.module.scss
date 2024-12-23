@@ -22,6 +22,23 @@
         color: #888;
     }
 
+    &__new {
+        font-size: 14px;
+        color: red;
+    }
+
+    &__sale {
+        text-decoration: line-through;
+        font-size: 14px;
+        color: #888;
+    }
+
+    &__section {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
     &__title {
         font-size: 14px;
         text-align: center;

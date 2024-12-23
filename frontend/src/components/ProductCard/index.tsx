@@ -11,7 +11,14 @@ const ProductCard = (props: Card) => {
         alt={`photo_${props.id}`}
       />
       <p className={styles.card__title}>{props.title}</p>
-      <p className={styles.card__price}>{props.price} ₽</p>
+      {props.sale ? (
+        <div className={styles.card__section}>
+          <p className={styles.card__sale}>{props.price + props.sale} ₽</p>
+          <p className={styles.card__new}>{props.price} ₽</p>
+        </div>
+      ) : (
+        <p className={styles.card__price}>{props.price} ₽</p>
+      )}
     </Link>
   );
 };

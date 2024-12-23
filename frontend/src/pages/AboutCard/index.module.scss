@@ -110,6 +110,11 @@
         display: flex;
         flex-direction: column;
 
+        &__section {
+            display: flex;
+            gap: 15px;
+        }
+
         &__title {
             line-height: 0%;
             font-weight: 500;
