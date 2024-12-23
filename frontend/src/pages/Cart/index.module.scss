@@ -1,0 +1,35 @@
+.cart {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 15px;
+
+    &__section {
+        display: flex;
+        gap: 50px;
+        align-items: center;
+    }
+
+    &__image {
+        width: 180px;
+        height: 220px;
+        border-radius: 15px;
+    }
+
+    &__title {
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+    &__price {
+        font-size: 20px;
+    }
+}
