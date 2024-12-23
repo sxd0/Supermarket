@@ -8,6 +8,7 @@ import favouriteIcon from "../../assets/svg/favourite.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import axios from "axios";
+import SuccessfullyAdded from "../../components/SuccessfullyAdded";
 
 const AboutCard = () => {
   const { id } = useParams<string>();
@@ -16,8 +17,26 @@ const AboutCard = () => {
   const [card, setCard] = useState<Card | null>(null);
   const [openSection, setOpenSection] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<string>("");
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const navigate = useNavigate();
+
+  const fetchRefresh = async () => {
+    try {
+      await axios.post(
+        `http://127.0.0.1:8080/auth/refresh`,
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Ошибка получения токена: ", error);
+    }
+  };
 
   useEffect(() => {
     const fetchCard = async () => {
@@ -60,10 +79,17 @@ const AboutCard = () => {
         }
       );
 
-      if (response.status === 200)
+      if (response.status === 200) {
         console.log(`Товар ${card?.title} добавлен в корзину`);
+        setIsVisible(true);
+        setTimeout(() => {
+          setIsVisible(false);
+        }, 2000);
+      }
     } catch (error) {
       console.log("Ошибка добавления товара в корзину", error);
+      fetchRefresh();
+      addInCart();
     }
   };
 
@@ -257,6 +283,7 @@ const AboutCard = () => {
               </div>
             </div>
           </div>
+          {isVisible && <SuccessfullyAdded itemName={card.title} />}
         </div>
       ) : (
         <h3 className={styles.loading}>Загрузка страницы...</h3>
