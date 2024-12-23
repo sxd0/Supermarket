@@ -84,8 +84,8 @@ async def vk_callback(request: Request, response: Response):
 
             access_token = create_access_token({"sub": str(user.id)})
             refresh_token = create_refresh_token({"sub": str(user.id)})
-            response.set_cookie("access_token", access_token, httponly=True)
-            response.set_cookie("refresh_token", refresh_token, httponly=True)
+            response.set_cookie("access_token", access_token, httponly=True, samesite="None", secure=True)
+            response.set_cookie("refresh_token", refresh_token, httponly=True, samesite="None", secure=True)
 
             return {"message": "Successfully authenticated", "user_id": user_id, "email": email}
         else:
@@ -120,8 +120,8 @@ async def login_user(response: Response, user_data: SUserLogin):
     # response.set_cookie("access_token", access_token, httponly=True)
     refresh_token = create_refresh_token({"sub": str(user.id)})
 
-    response.set_cookie("access_token", access_token, httponly=True)
-    response.set_cookie("refresh_token", refresh_token, httponly=True)
+    response.set_cookie("access_token", access_token, httponly=True, samesite="None", secure=True)
+    response.set_cookie("refresh_token", refresh_token, httponly=True, samesite="None", secure=True)
     return user
 
 @router.post("/refresh")
@@ -146,11 +146,11 @@ async def refresh_token(response: Response, refresh_token: str = Depends(get_ref
 
     # Создание нового access токена
     access_token = create_access_token({"sub": str(user.id)})
-    response.set_cookie("access_token", access_token, httponly=True)
+    response.set_cookie("access_token", access_token, httponly=True, samesite="None", secure=True)
 
     # Создание нового refresh токена
     new_refresh_token = create_refresh_token({"sub": str(user.id)})
-    response.set_cookie("refresh_token", new_refresh_token, httponly=True)
+    response.set_cookie("refresh_token", new_refresh_token, httponly=True, samesite="None", secure=True)
 
     return {"access_token": access_token}
 

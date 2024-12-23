@@ -30,18 +30,13 @@ app.include_router(router_role)
 app.include_router(router_payment)
 
 
-# CORS
-origins = [
-    "http://localhost:5173"
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
     allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers",
-                   "Access-Control-Allow-Origin", "Authorization"]
+                   "Access-Control-Allow-Origin", "Authorization"],
 )
 
 

@@ -47,7 +47,7 @@ const AboutCard = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/cart",
+        "http://127.0.0.1:8080/cart",
         {
           card_id: card?.id,
           quantity: 1,
