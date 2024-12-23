@@ -89,7 +89,6 @@ const AboutCard = () => {
     } catch (error) {
       console.log("Ошибка добавления товара в корзину", error);
       fetchRefresh();
-      addInCart();
     }
   };
 
