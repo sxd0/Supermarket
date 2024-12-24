@@ -6,6 +6,16 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
+
+    &__button {
+        border: 1px solid black;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background-color: white;
+            color: black;
+        }
+    }
 }
 
 .cards {

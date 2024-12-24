@@ -25,6 +25,7 @@
         display: flex;
         gap: 50px;
         align-items: center;
+        text-decoration: none;
     }
 
     &__image {
@@ -33,14 +34,31 @@
         border-radius: 15px;
     }
 
+    &__group {
+        width: 60%;
+    }
+
+    &__cost {
+        width: 20%;
+        text-align: center;
+    }
+
+    &__description {
+        font-size: 18px;
+    }
+
+    &__quantity {
+        font-weight: 700;
+        font-size: 20px;
+    }
+
     &__title {
-        text-decoration: none;
         font-weight: 600;
         font-size: 20px;
     }
 
     &__price {
-        text-decoration: none;
         font-size: 20px;
+        font-weight: 700;
     }
 }

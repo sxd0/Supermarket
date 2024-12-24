@@ -85,25 +85,32 @@ const Cart = () => {
           {cart.map((item) => (
             <div key={item.id}>
               {cards[item.card_id] ? (
-                <Link to={`/card/${item.card_id}`} className={styles.product}>
-                  <div className={styles.product__section}>
+                <div className={styles.product}>
+                  <Link to={`/card/${item.card_id}`} className={styles.product__section}>
                     <img
                       className={styles.product__image}
                       src={cards[item.card_id].image}
                       alt={`image_${item.card_id}`}
                     />
-                    <p className={styles.product__title}>
-                      {cards[item.card_id].title}
+                    <div className={styles.product__group}>
+                      <p className={styles.product__title}>
+                        {cards[item.card_id].title}
+                      </p>
+                      <p className={styles.product__description}>
+                        {cards[item.card_id].description}
+                      </p>
+                    </div>
+                  </Link>
+
+                  <div className={styles.product__cost}>
+                    <p className={styles.product__quantity}>
+                      Количество: {item.quantity}
                     </p>
                     <p className={styles.product__price}>
-                      {cards[item.card_id].price} ₽
+                      {cards[item.card_id].price * item.quantity} ₽
                     </p>
                   </div>
-
-                  <p className={styles.product__quantity}>
-                    Количество: {item.quantity}
-                  </p>
-                </Link>
+                </div>
               ) : (
                 <h3 className={styles.title}>Загрузка товаров корзины</h3>
               )}

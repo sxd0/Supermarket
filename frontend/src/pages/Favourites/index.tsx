@@ -118,7 +118,7 @@ const Favourites = () => {
                       {favourite[item].title}
                     </p>
                   </Link>
-                  <button onClick={() => deleteCard(item)}>Удалить</button>
+                  <button className={styles.favourite__button} onClick={() => deleteCard(item)}>Удалить</button>
                 </div>
               ) : (
                 <h3 className={styles.title}>Загрузка избранных товаров</h3>
