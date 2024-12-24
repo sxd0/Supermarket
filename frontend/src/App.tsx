@@ -12,6 +12,7 @@ import Registration from "./pages/Registration";
 import AboutCard from "./pages/AboutCard";
 import CatalogMale from "./pages/CatalogMale";
 import CatalogFemale from "./pages/CatalogFemale";
+import Favourites from "./pages/Favourites";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/catalog-female" element={<CatalogFemale />} />
           <Route path="/catalog-male" element={<CatalogMale />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/favourites" element={<Favourites />} />
           <Route path="/about" element={<About />} />
           <Route path="/new" element={<New />} />
           <Route path="/profile" element={<Profile />} />

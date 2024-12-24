@@ -1,0 +1,44 @@
+.title {
+    text-align: center;
+}
+
+.favourites {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.favourite {
+    display: flex;
+    max-width: 210px;
+    text-align: center;
+    text-decoration: none;
+    flex-direction: column;
+    padding: 15px;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: scale(1.03);
+    }
+
+    &__image {
+        width: 210px;
+        height: 250px;
+        border-radius: 15px;
+    }
+
+    &__title {
+        max-height: 30px;
+        overflow: hidden;
+        font-size: 20px;
+    }
+}
+
+.section {
+    text-decoration: none;
+}

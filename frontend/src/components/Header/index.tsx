@@ -36,7 +36,7 @@ const Header = () => {
         </div>
 
         <div className={styles.header__icons}>
-          <Link to="/">
+          <Link to="/favourites">
             <ReactSVG src={favouriteIcon} className={styles.icon} />
           </Link>
           <Link to="/profile">

@@ -98,6 +98,7 @@
         &__icon {
             width: 35px;
             height: 35px;
+            cursor: pointer;
             transition: all ease 0.3s;
 
             &:hover {
@@ -121,9 +122,8 @@
         }
 
         &__text {
-            width: 20px;
             text-align: center;
-            padding: 10px;
+            padding: 10px 15px;
             border: 1px solid black;
             cursor: pointer;
             transition: all ease 0.3s;

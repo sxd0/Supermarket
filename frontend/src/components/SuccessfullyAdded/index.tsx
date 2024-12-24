@@ -1,10 +1,14 @@
 import styles from "./index.module.scss";
 
-const SuccessfullyAdded = (props: { itemName: string }) => {
+const SuccessfullyAdded = (props: { itemName: string; cart: boolean }) => {
   return (
     <div className={styles.add}>
       <p className={styles.add__title}>Товар: {props.itemName}</p>
-      <p className={styles.add__text}>Успешно добавлен в корзину</p>
+      {props.cart ? (
+        <p className={styles.add__text}>Успешно добавлен в корзину</p>
+      ) : (
+        <p className={styles.add__text}>Успешно добавлен в избранное</p>
+      )}
     </div>
   );
 };

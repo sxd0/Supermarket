@@ -4,6 +4,10 @@
     gap: 10px;
 }
 
+.title {
+    text-align: center;
+}
+
 .product {
     display: flex;
     justify-content: space-between;
@@ -11,6 +15,11 @@
     padding: 15px;
     border: 1px solid black;
     border-radius: 15px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: scale(1.03);
+    }
 
     &__section {
         display: flex;
@@ -25,11 +34,13 @@
     }
 
     &__title {
+        text-decoration: none;
         font-weight: 600;
         font-size: 20px;
     }
 
     &__price {
+        text-decoration: none;
         font-size: 20px;
     }
 }

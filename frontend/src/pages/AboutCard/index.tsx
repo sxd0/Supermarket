@@ -18,6 +18,7 @@ const AboutCard = () => {
   const [openSection, setOpenSection] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isAddedCart, setIsAddedCart] = useState<boolean>();
 
   const navigate = useNavigate();
 
@@ -82,6 +83,7 @@ const AboutCard = () => {
       if (response.status === 200) {
         console.log(`Товар ${card?.title} добавлен в корзину`);
         setIsVisible(true);
+        setIsAddedCart(true);
         setTimeout(() => {
           setIsVisible(false);
         }, 2000);
@@ -92,8 +94,31 @@ const AboutCard = () => {
     }
   };
 
-  const addInFavourite = () => {
+  const addInFavourite = async () => {
     if (!user) return navigate("/profile");
+
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8080/auth/favourites/add?favourite=${card?.id}`,
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setIsVisible(true);
+        setIsAddedCart(false);
+        setTimeout(() => {
+          setIsVisible(false);
+        }, 2000);
+      }
+    } catch (error) {
+      console.log("Ошибка добавления в избранное", error);
+    }
   };
 
   const toggleSection = (section: string) => {
@@ -282,7 +307,9 @@ const AboutCard = () => {
               </div>
             </div>
           </div>
-          {isVisible && <SuccessfullyAdded itemName={card.title} />}
+          {isVisible && isAddedCart && (
+            <SuccessfullyAdded itemName={card.title} cart={isAddedCart} />
+          )}
         </div>
       ) : (
         <h3 className={styles.loading}>Загрузка страницы...</h3>

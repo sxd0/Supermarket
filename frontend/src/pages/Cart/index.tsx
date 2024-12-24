@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import BreadCrumbs from "../../components/BreadCrumbs";
 import axios from "axios";
 import { CartList } from "../../Types/cartType";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import { Card } from "../../Types/cardType";
@@ -78,12 +78,14 @@ const Cart = () => {
     <div>
       <BreadCrumbs items={breadCrumbs} />
 
+      <h2 className={styles.title}>Корзина</h2>
+
       {cart ? (
         <div className={styles.cart}>
           {cart.map((item) => (
             <div key={item.id}>
               {cards[item.card_id] ? (
-                <div className={styles.product}>
+                <Link to={`/card/${item.card_id}`} className={styles.product}>
                   <div className={styles.product__section}>
                     <img
                       className={styles.product__image}
@@ -101,7 +103,7 @@ const Cart = () => {
                   <p className={styles.product__quantity}>
                     Количество: {item.quantity}
                   </p>
-                </div>
+                </Link>
               ) : (
                 <h3>Загрузка товаров</h3>
               )}
