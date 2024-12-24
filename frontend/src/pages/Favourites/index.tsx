@@ -60,7 +60,7 @@ const Favourites = () => {
       );
 
       if (response.status === 200) {
-        fetchFavourites();
+        setPage((prevCart) => prevCart?.filter((item) => item !== id) || null);
       }
     } catch (error) {
       console.log("Ошибка получения карточки", error);
@@ -118,7 +118,12 @@ const Favourites = () => {
                       {favourite[item].title}
                     </p>
                   </Link>
-                  <button className={styles.favourite__button} onClick={() => deleteCard(item)}>Удалить</button>
+                  <button
+                    className={styles.favourite__button}
+                    onClick={() => deleteCard(item)}
+                  >
+                    Удалить
+                  </button>
                 </div>
               ) : (
                 <h3 className={styles.title}>Загрузка избранных товаров</h3>

@@ -52,28 +52,78 @@ const Cart = () => {
     }
   };
 
-  useEffect(() => {
-    if (!user) navigate("/profile");
-
-    const fetchCart = async () => {
-      try {
-        const response = await axios.get("http://127.0.0.1:8080/cart", {
+  const deleteCard = async (id: number) => {
+    try {
+      const response = await axios.delete(
+        `http://127.0.0.1:8080/cart?cart_id=${id}`,
+        {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
-        });
+        }
+      );
+
+      if (response.status === 200) {
+        setCart(
+          (prevCart) => prevCart?.filter((item) => item.id !== id) || null
+        );
+      }
+    } catch (error) {
+      console.log("Ошибка удаления карточки", error);
+    }
+  };
+
+  const quantityCard = async (id: number, quantity: number) => {
+    if (quantity > 0) {
+      try {
+        const response = await axios.put(
+          `http://127.0.0.1:8080/cart/update_quantity?cart_id=${id}&new_quantity=${quantity}`,
+          {},
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.status === 200) {
-          setCart(response.data);
-          response.data.forEach((item: CartList) => {
-            fetchCard(item.card_id);
-          });
+          setCart(
+            (prev) =>
+              prev?.map((item) =>
+                item.id === id ? { ...item, quantity } : item
+              ) || null
+          );
         }
       } catch (error) {
-        console.log("Ошибка получения корзины", error);
+        console.log("Ошибка удаления карточки", error);
       }
-    };
+    }
+  };
+
+  const fetchCart = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8080/cart", {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        setCart(response.data);
+        response.data.forEach((item: CartList) => {
+          fetchCard(item.card_id);
+        });
+      }
+    } catch (error) {
+      console.log("Ошибка получения корзины", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!user) navigate("/profile");
 
     fetchCart();
   }, []);
@@ -115,20 +165,29 @@ const Cart = () => {
                     </p>
 
                     <div className={styles.product__addDelete}>
-                      <ReactSVG src={deleteSvg} className={styles.product__icon} />
+                      <ReactSVG
+                        onClick={() => quantityCard(item.id, item.quantity - 1)}
+                        src={deleteSvg}
+                        className={styles.product__icon}
+                      />
 
                       <p className={styles.product__quantity}>
                         {item.quantity}
                       </p>
 
                       <ReactSVG
+                        onClick={() => quantityCard(item.id, item.quantity + 1)}
                         src={addSvg}
                         className={styles.product__icon}
                       />
                     </div>
                   </div>
 
-                  <ReactSVG src={cross} className={styles.product__cross} />
+                  <ReactSVG
+                    onClick={() => deleteCard(item.id)}
+                    src={cross}
+                    className={styles.product__cross}
+                  />
                 </div>
               ) : (
                 <h3 className={styles.title}>Загрузка товаров корзины</h3>
