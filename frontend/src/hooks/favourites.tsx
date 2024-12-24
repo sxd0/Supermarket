@@ -23,14 +23,13 @@ const FavouriteHook = () => {
           ...item,
           [id]: response.data,
         }));
-      } else if (response.status === 400) {
-        const refreshed = await refreshAccessToken();
-        refreshed
-          ? await fetchCard(id)
-          : console.log("Не удалось обноваить токен");
       }
     } catch (error) {
       console.log("Ошибка получения карточки", error);
+      const refreshed = await refreshAccessToken();
+      refreshed
+        ? await fetchCard(id)
+        : console.log("Не удалось обновить токен");
     }
   };
 
@@ -48,14 +47,13 @@ const FavouriteHook = () => {
 
       if (response.status === 200) {
         setPage((prevCart) => prevCart?.filter((item) => item !== id) || null);
-      } else if (response.status === 400) {
-        const refreshed = await refreshAccessToken();
-        refreshed
-          ? await deleteCard(id)
-          : console.log("Не удалось обноваить токен");
       }
     } catch (error) {
       console.log("Ошибка получения карточки", error);
+      const refreshed = await refreshAccessToken();
+      refreshed
+        ? await deleteCard(id)
+        : console.log("Не удалось обновить токен");
     }
   };
 
@@ -76,14 +74,13 @@ const FavouriteHook = () => {
         response.data.forEach((item: number) => {
           fetchCard(item);
         });
-      } else if (response.status === 400) {
-        const refreshed = await refreshAccessToken();
-        refreshed
-          ? await fetchFavourites()
-          : console.log("Не удалось обноваить токен");
       }
     } catch (error) {
       console.log("Ошибка получения корзины", error);
+      const refreshed = await refreshAccessToken();
+      refreshed
+        ? await fetchFavourites()
+        : console.log("Не удалось обновить токен");
     }
   };
 

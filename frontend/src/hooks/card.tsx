@@ -33,6 +33,10 @@ const CardHook = () => {
       }
     } catch (error) {
       console.error("Ошибка получения карточки: ", error);
+      const refreshed = await refreshAccessToken();
+      refreshed
+        ? await fetchCard(id)
+        : console.log("Не удалось обновить токен");
     }
   };
 
@@ -61,14 +65,11 @@ const CardHook = () => {
         setTimeout(() => {
           setIsVisible(false);
         }, 2000);
-      } else if (response.status === 400) {
-        const refreshed = await refreshAccessToken();
-        refreshed
-          ? await addInCart()
-          : console.log("Не удалось обноваить токен");
       }
     } catch (error) {
       console.log("Ошибка добавления товара в корзину", error);
+      const refreshed = await refreshAccessToken();
+      refreshed ? await addInCart() : console.log("Не удалось обновить токен");
     }
   };
 
@@ -93,14 +94,13 @@ const CardHook = () => {
         setTimeout(() => {
           setIsVisible(false);
         }, 2000);
-      } else if (response.status === 400) {
-        const refreshed = await refreshAccessToken();
-        refreshed
-          ? await addInFavourite()
-          : console.log("Не удалось обноваить токен");
       }
     } catch (error) {
       console.log("Ошибка добавления в избранное", error);
+      const refreshed = await refreshAccessToken();
+      refreshed
+        ? await addInFavourite()
+        : console.log("Не удалось обновить токен");
     }
   };
 

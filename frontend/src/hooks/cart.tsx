@@ -24,14 +24,13 @@ const CartHook = () => {
           ...item,
           [id]: response.data,
         }));
-      } else if (response.status === 400) {
-        const refreshed = await refreshAccessToken();
-        refreshed
-          ? await fetchCard(id)
-          : console.log("Не удалось обноваить токен");
       }
     } catch (error) {
       console.error("Ошибка получения карточки: ", error);
+      const refreshed = await refreshAccessToken();
+      refreshed
+        ? await fetchCard(id)
+        : console.log("Не удалось обновить токен");
     }
   };
 
@@ -51,14 +50,13 @@ const CartHook = () => {
         setCart(
           (prevCart) => prevCart?.filter((item) => item.id !== id) || null
         );
-      } else if (response.status === 400) {
-        const refreshed = await refreshAccessToken();
-        refreshed
-          ? await deleteCard(id)
-          : console.log("Не удалось обноваить токен");
       }
     } catch (error) {
       console.log("Ошибка удаления карточки", error);
+      const refreshed = await refreshAccessToken();
+      refreshed
+        ? await deleteCard(id)
+        : console.log("Не удалось обновить токен");
     }
   };
 
@@ -83,14 +81,13 @@ const CartHook = () => {
                 item.id === id ? { ...item, quantity } : item
               ) || null
           );
-        } else if (response.status === 400) {
-          const refreshed = await refreshAccessToken();
-          refreshed
-            ? await quantityCard(id, quantity)
-            : console.log("Не удалось обноваить токен");
         }
       } catch (error) {
         console.log("Ошибка удаления карточки", error);
+        const refreshed = await refreshAccessToken();
+        refreshed
+          ? await quantityCard(id, quantity)
+          : console.log("Не удалось обновить токен");
       }
     }
   };
@@ -117,6 +114,8 @@ const CartHook = () => {
       }
     } catch (error) {
       console.log("Ошибка получения корзины", error);
+      const refreshed = await refreshAccessToken();
+      refreshed ? await fetchCart() : console.log("Не удалось обновить токен");
     }
   };
 
