@@ -148,7 +148,7 @@ const AboutCard = () => {
   ];
 
   return (
-    <div className={styles.container}>
+    <div>
       <BreadCrumbs items={breadCrumbs} />
 
       {card ? (
