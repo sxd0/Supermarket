@@ -8,12 +8,13 @@ import { ReactSVG } from "react-svg";
 import addSvg from "../../assets/svg/add.svg";
 import deleteSvg from "../../assets/svg/delete.svg";
 import cross from "../../assets/svg/cross.svg";
-import { cart, deleteCard, fetchCart, quantityCard } from "../../hooks/cart";
-import { cards } from "../../hooks/new";
+import CartHook from "../../hooks/cart";
 
 const Cart = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
+
+  const { cards, cart, deleteCard, fetchCart, quantityCard } = CartHook();
 
   const breadCrumbs = [
     {

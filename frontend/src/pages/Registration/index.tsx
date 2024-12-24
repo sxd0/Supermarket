@@ -1,13 +1,15 @@
 import { useState } from "react";
 import styles from "./index.module.scss";
 import BreadCrumbs from "../../components/BreadCrumbs";
-import { postRegistration } from "../../hooks/registration";
+import RegistrationHook from "../../hooks/registration";
 
 const Registration = () => {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { postRegistration } = RegistrationHook();
 
   const breadCrumbs = [
     {

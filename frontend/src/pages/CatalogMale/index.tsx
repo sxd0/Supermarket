@@ -3,17 +3,19 @@ import BreadCrumbs from "../../components/BreadCrumbs";
 import styles from "./index.module.scss";
 import { CardGender } from "../../Types/cardType";
 import ProductCard from "../../components/ProductCard";
-import {
-  fetchCatalog,
-  fetchCardCatalog,
-  isLoadingCatalog,
-  catalog,
-  isLoadingCards,
-} from "../../hooks/catalog";
-import { cards } from "../../hooks/new";
+import CatalogHook from "../../hooks/catalog";
 
 const CatalogMale = () => {
   const [catalogId, setCatalogId] = useState(1);
+
+  const {
+    cards,
+    fetchCardCatalog,
+    isLoadingCatalog,
+    catalog,
+    isLoadingCards,
+    fetchCatalog,
+  } = CatalogHook();
 
   useEffect(() => {
     fetchCatalog();

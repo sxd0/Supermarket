@@ -6,21 +6,23 @@ import BreadCrumbs from "../../components/BreadCrumbs";
 import { ReactSVG } from "react-svg";
 import favouriteIcon from "../../assets/svg/favourite.svg";
 import SuccessfullyAdded from "../../components/SuccessfullyAdded";
-import {
-  setOpenSection,
-  setSelectedImage,
-  card,
-  selectedImage,
-  addInCart,
-  addInFavourite,
-  openSection,
-  isVisible,
-  isAddedCart,
-} from "../../hooks/card";
-import { fetchCard } from "../../hooks/card";
+import CardHook from "../../hooks/card";
 
 const AboutCard = () => {
   const { id } = useParams<{ id: string }>();
+
+  const {
+    setOpenSection,
+    setSelectedImage,
+    card,
+    selectedImage,
+    addInCart,
+    addInFavourite,
+    openSection,
+    isVisible,
+    isAddedCart,
+    fetchCard,
+  } = CardHook();
 
   useEffect(() => {
     id ? fetchCard(id) : null;

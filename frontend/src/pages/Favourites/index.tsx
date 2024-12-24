@@ -4,16 +4,13 @@ import styles from "./index.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { Link, useNavigate } from "react-router";
-import {
-  deleteCard,
-  favourite,
-  fetchFavourites,
-  page,
-} from "../../hooks/favourites";
+import FavouriteHook from "../../hooks/favourites";
 
 const Favourites = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
+
+  const { deleteCard, favourite, fetchFavourites, page } = FavouriteHook();
 
   const breadCrumbs = [
     {

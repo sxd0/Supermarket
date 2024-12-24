@@ -3,18 +3,20 @@ import MainSlider from "../../components/MainSlider";
 import SliderWithNew from "../../components/SliderWithNew/index";
 import styles from "./index.module.scss";
 import ProductCard from "../../components/ProductCard";
-import {
-  cardPopulars,
-  cardSales,
-  fetchCardPopulars,
-  fetchCardSales,
-  isLoadingPopular,
-  isLoadingSale,
-} from "../../hooks/home";
+import HomeHook from "../../hooks/home";
 
 const Home = () => {
   const [limitSale, setLimitSale] = useState<number>(8);
   const [limitPopular, setLimitPopular] = useState<number>(8);
+
+  const {
+    cardSales,
+    cardPopulars,
+    isLoadingSale,
+    isLoadingPopular,
+    fetchCardSales,
+    fetchCardPopulars,
+  } = HomeHook();
 
   useEffect(() => {
     fetchCardSales(limitSale);

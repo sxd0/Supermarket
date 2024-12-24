@@ -2,12 +2,14 @@ import { useEffect } from "react";
 import styles from "./index.module.scss";
 import ProductCard from "../../components/ProductCard";
 import BreadCrumbs from "../../components/BreadCrumbs";
-import { cards, fetchNewCards, isLoading } from "../../hooks/new";
+import NewHook from "../../hooks/new";
 
 const New = () => {
   useEffect(() => {
     fetchNewCards();
   }, []);
+
+  const { cards, isLoading, fetchNewCards } = NewHook();
 
   const breadCrumbs = [
     {
