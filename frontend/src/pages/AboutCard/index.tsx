@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card } from "../../Types/cardType";
+import { Card, CardGender } from "../../Types/cardType";
 import styles from "./index.module.scss";
 import { useNavigate, useParams } from "react-router";
 import BreadCrumbs from "../../components/BreadCrumbs";
@@ -135,7 +135,16 @@ const AboutCard = () => {
 
   const breadCrumbs = [
     { id: 1, title: "Главная", link: "/" },
-    { id: 2, title: card?.title || "Товар", link: `/card/${id}` },
+    {
+      id: 2,
+      title:
+        card?.gender === CardGender.MALE
+          ? "Мужской каталог"
+          : "Женский каталог",
+      link:
+        card?.gender === CardGender.MALE ? "/catalog-male" : "/catalog-female",
+    },
+    { id: 3, title: card?.title || "Товар", link: `/card/${id}` },
   ];
 
   return (
