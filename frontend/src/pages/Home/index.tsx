@@ -4,6 +4,7 @@ import SliderWithNew from "../../components/SliderWithNew/index";
 import { Card } from "../../Types/cardType";
 import styles from "./index.module.scss";
 import ProductCard from "../../components/ProductCard";
+import axios from "axios";
 
 const Home = () => {
   const [cardSales, setCardSales] = useState<Card[]>([]);
@@ -17,20 +18,18 @@ const Home = () => {
 
   const fetchCardSales = async () => {
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `http://127.0.0.1:8080/card/sale?skip=0&limit=${limitSale}`,
         {
-          method: "GET",
-          credentials: "include",
+          withCredentials: true,
           headers: {
             "Content-type": "application/json",
           },
         }
       );
 
-      if (response.ok) {
-        const data = await response.json();
-        setCardSales(data);
+      if (response.status === 200) {
+        setCardSales(response.data);
         isSetLoadingSale(true);
       }
     } catch (error) {
@@ -41,20 +40,18 @@ const Home = () => {
 
   const fetchCardPopulars = async () => {
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `http://127.0.0.1:8080/card/popular?skip=0&limit=${limitPopular}`,
         {
-          method: "GET",
-          credentials: "include",
+          withCredentials: true,
           headers: {
             "Content-type": "application/json",
           },
         }
       );
 
-      if (response.ok) {
-        const data = await response.json();
-        setCardPopulars(data);
+      if (response.status === 200) {
+        setCardPopulars(response.data);
         isSetLoadingPopular(true);
       }
     } catch (error) {
@@ -65,8 +62,11 @@ const Home = () => {
 
   useEffect(() => {
     fetchCardSales();
+  }, [limitSale]);
+
+  useEffect(() => {
     fetchCardPopulars();
-  }, []);
+  }, [limitPopular]);
 
   return (
     <div>
@@ -91,7 +91,6 @@ const Home = () => {
         <button
           onClick={() => {
             setLimitSale((prevLimit) => prevLimit + 8);
-            fetchCardSales();
           }}
           className={styles.sales__button}
         >
@@ -117,7 +116,6 @@ const Home = () => {
         <button
           onClick={() => {
             setLimitPopular((prevLimit) => prevLimit + 8);
-            fetchCardPopulars();
           }}
           className={styles.sales__button}
         >
