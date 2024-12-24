@@ -1,125 +1,30 @@
-import { useEffect, useState } from "react";
-import { Card, CardGender } from "../../Types/cardType";
+import { useEffect } from "react";
+import { CardGender } from "../../Types/cardType";
 import styles from "./index.module.scss";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import BreadCrumbs from "../../components/BreadCrumbs";
 import { ReactSVG } from "react-svg";
 import favouriteIcon from "../../assets/svg/favourite.svg";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import axios from "axios";
 import SuccessfullyAdded from "../../components/SuccessfullyAdded";
+import {
+  setOpenSection,
+  setSelectedImage,
+  card,
+  selectedImage,
+  addInCart,
+  addInFavourite,
+  openSection,
+  isVisible,
+  isAddedCart,
+} from "../../hooks/card";
+import { fetchCard } from "../../hooks/card";
 
 const AboutCard = () => {
-  const { id } = useParams<string>();
-  const { user } = useSelector((state: RootState) => state.user);
-
-  const [card, setCard] = useState<Card | null>(null);
-  const [openSection, setOpenSection] = useState<string[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string>("");
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [isAddedCart, setIsAddedCart] = useState<boolean>(false);
-
-  const navigate = useNavigate();
-
-  const fetchRefresh = async () => {
-    try {
-      await axios.post(
-        `http://127.0.0.1:8080/auth/refresh`,
-        {},
-        {
-          withCredentials: true,
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
-    } catch (error) {
-      console.error("Ошибка получения токена: ", error);
-    }
-  };
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    const fetchCard = async () => {
-      try {
-        const response = await axios.get(`http://127.0.0.1:8080/card/${id}`, {
-          withCredentials: true,
-          headers: {
-            "Content-type": "application/json",
-          },
-        });
-
-        if (response.status === 200) {
-          const data = await response.data;
-          setCard(data);
-          setSelectedImage(data.image);
-        }
-      } catch (error) {
-        console.error("Ошибка получения карточки: ", error);
-      }
-    };
-
-    fetchCard();
+    id ? fetchCard(id) : null;
   }, [id]);
-
-  const addInCart = async () => {
-    if (!user) return navigate("/profile");
-
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8080/cart",
-        {
-          card_id: card?.id,
-          quantity: 1,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        console.log(`Товар ${card?.title} добавлен в корзину`);
-        setIsVisible(true);
-        setIsAddedCart(true);
-        setTimeout(() => {
-          setIsVisible(false);
-        }, 2000);
-      }
-    } catch (error) {
-      console.log("Ошибка добавления товара в корзину", error);
-      fetchRefresh();
-    }
-  };
-
-  const addInFavourite = async () => {
-    if (!user) return navigate("/profile");
-
-    try {
-      const response = await axios.post(
-        `http://127.0.0.1:8080/auth/favourites/add?favourite=${card?.id}`,
-        {},
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        setIsVisible(true);
-        setIsAddedCart(false);
-        setTimeout(() => {
-          setIsVisible(false);
-        }, 2000);
-      }
-    } catch (error) {
-      console.log("Ошибка добавления в избранное", error);
-    }
-  };
 
   const toggleSection = (section: string) => {
     setOpenSection((prev) =>

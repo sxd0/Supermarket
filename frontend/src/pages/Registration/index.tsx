@@ -1,37 +1,13 @@
 import { useState } from "react";
 import styles from "./index.module.scss";
 import BreadCrumbs from "../../components/BreadCrumbs";
-import { useNavigate } from "react-router";
+import { postRegistration } from "../../hooks/registration";
 
 const Registration = () => {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const navaigate = useNavigate();
-
-  const fetchLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://127.0.0.1:8080/auth/register", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ name, surname, email, password }),
-      });
-
-      if (response.ok) {
-        navaigate("/profile");
-        console.log("Пользователь зарегистрирован");
-      }
-    } catch (error) {
-      console.log("Ошибка входа пользователя: ", error);
-    }
-  };
 
   const breadCrumbs = [
     {
@@ -51,11 +27,15 @@ const Registration = () => {
     },
   ];
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    await postRegistration(e, name, surname, email, password);
+  };
+
   return (
     <div>
       <BreadCrumbs items={breadCrumbs} />
       <section className={styles.wrapper}>
-        <form className={styles.registration} onSubmit={fetchLogin}>
+        <form className={styles.registration} onSubmit={handleSubmit}>
           <h2 className={styles.registration__title}>Регистрация</h2>
           <input
             value={name}

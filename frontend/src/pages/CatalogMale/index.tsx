@@ -1,66 +1,26 @@
 import { useEffect, useState } from "react";
 import BreadCrumbs from "../../components/BreadCrumbs";
 import styles from "./index.module.scss";
-import type { Catalog } from "../../Types/catalogType";
-import { Card, CardGender } from "../../Types/cardType";
+import { CardGender } from "../../Types/cardType";
 import ProductCard from "../../components/ProductCard";
+import {
+  fetchCatalog,
+  fetchCardCatalog,
+  isLoadingCatalog,
+  catalog,
+  isLoadingCards,
+} from "../../hooks/catalog";
+import { cards } from "../../hooks/new";
 
 const CatalogMale = () => {
-  const [cards, setCards] = useState<Card[]>([]);
-  const [catalog, setCatalog] = useState<Catalog[]>([]);
-  const [isLoadingCatalog, setIsLoadingCatalog] = useState(false);
-  const [isLoadingCards, setIsLoadingCards] = useState(false);
   const [catalogId, setCatalogId] = useState(1);
 
-  const fetchCardCatalog = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/card/only/${catalogId}`,
-        {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setCards(data);
-        setIsLoadingCards(true);
-      }
-    } catch (error) {
-      console.log("Ошибка получения карточек: ", error);
-      setIsLoadingCards(false);
-    }
-  };
-
   useEffect(() => {
-    const fetchCatalog = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/category", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-type": "application/json",
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setCatalog(data);
-          setIsLoadingCatalog(true);
-        }
-      } catch (error) {
-        console.log("Ошибка получения каталога: ", error);
-        setIsLoadingCatalog(false);
-      }
-    };
-
     fetchCatalog();
   }, []);
 
   useEffect(() => {
-    fetchCardCatalog();
+    fetchCardCatalog(catalogId);
   }, [catalogId]);
 
   const breadCrumbs = [

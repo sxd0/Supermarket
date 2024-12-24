@@ -1,71 +1,27 @@
 import { useEffect, useState } from "react";
 import MainSlider from "../../components/MainSlider";
 import SliderWithNew from "../../components/SliderWithNew/index";
-import { Card } from "../../Types/cardType";
 import styles from "./index.module.scss";
 import ProductCard from "../../components/ProductCard";
-import axios from "axios";
+import {
+  cardPopulars,
+  cardSales,
+  fetchCardPopulars,
+  fetchCardSales,
+  isLoadingPopular,
+  isLoadingSale,
+} from "../../hooks/home";
 
 const Home = () => {
-  const [cardSales, setCardSales] = useState<Card[]>([]);
-  const [cardPopulars, setCardPopulars] = useState<Card[]>([]);
-
-  const [isLoadingSale, isSetLoadingSale] = useState(false);
-  const [isLoadingPopular, isSetLoadingPopular] = useState(false);
-
   const [limitSale, setLimitSale] = useState<number>(8);
   const [limitPopular, setLimitPopular] = useState<number>(8);
 
-  const fetchCardSales = async () => {
-    try {
-      const response = await axios.get(
-        `http://127.0.0.1:8080/card/sale?skip=0&limit=${limitSale}`,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        setCardSales(response.data);
-        isSetLoadingSale(true);
-      }
-    } catch (error) {
-      console.log("Ошибка получения карточек: ", error);
-      isSetLoadingSale(false);
-    }
-  };
-
-  const fetchCardPopulars = async () => {
-    try {
-      const response = await axios.get(
-        `http://127.0.0.1:8080/card/popular?skip=0&limit=${limitPopular}`,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-type": "application/json",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        setCardPopulars(response.data);
-        isSetLoadingPopular(true);
-      }
-    } catch (error) {
-      console.log("Ошибка получения карточек: ", error);
-      isSetLoadingPopular(false);
-    }
-  };
-
   useEffect(() => {
-    fetchCardSales();
+    fetchCardSales(limitSale);
   }, [limitSale]);
 
   useEffect(() => {
-    fetchCardPopulars();
+    fetchCardPopulars(limitPopular);
   }, [limitPopular]);
 
   return (
