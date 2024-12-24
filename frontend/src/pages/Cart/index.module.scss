@@ -9,6 +9,7 @@
 }
 
 .product {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -40,7 +41,9 @@
 
     &__cost {
         width: 20%;
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     &__description {
@@ -60,5 +63,29 @@
     &__price {
         font-size: 20px;
         font-weight: 700;
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+
+    &__addDelete {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__icon {
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+    }
+
+    &__cross {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
     }
 }

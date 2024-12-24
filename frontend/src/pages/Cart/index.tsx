@@ -7,6 +7,10 @@ import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import { Card } from "../../Types/cardType";
 import styles from "./index.module.scss";
+import { ReactSVG } from "react-svg";
+import addSvg from "../../assets/svg/add.svg";
+import deleteSvg from "../../assets/svg/delete.svg";
+import cross from "../../assets/svg/cross.svg";
 
 const Cart = () => {
   const [cart, setCart] = useState<CartList[] | null>(null);
@@ -86,7 +90,10 @@ const Cart = () => {
             <div key={item.id}>
               {cards[item.card_id] ? (
                 <div className={styles.product}>
-                  <Link to={`/card/${item.card_id}`} className={styles.product__section}>
+                  <Link
+                    to={`/card/${item.card_id}`}
+                    className={styles.product__section}
+                  >
                     <img
                       className={styles.product__image}
                       src={cards[item.card_id].image}
@@ -103,13 +110,25 @@ const Cart = () => {
                   </Link>
 
                   <div className={styles.product__cost}>
-                    <p className={styles.product__quantity}>
-                      Количество: {item.quantity}
-                    </p>
                     <p className={styles.product__price}>
                       {cards[item.card_id].price * item.quantity} ₽
                     </p>
+
+                    <div className={styles.product__addDelete}>
+                      <ReactSVG src={deleteSvg} className={styles.product__icon} />
+
+                      <p className={styles.product__quantity}>
+                        {item.quantity}
+                      </p>
+
+                      <ReactSVG
+                        src={addSvg}
+                        className={styles.product__icon}
+                      />
+                    </div>
                   </div>
+
+                  <ReactSVG src={cross} className={styles.product__cross} />
                 </div>
               ) : (
                 <h3 className={styles.title}>Загрузка товаров корзины</h3>
