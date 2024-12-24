@@ -102,7 +102,7 @@ const Favourites = () => {
 
       <h2 className={styles.title}>Избранное</h2>
 
-      {page ? (
+      {page?.length ? (
         <div className={styles.favourites}>
           {page.map((item) => (
             <div key={item}>
@@ -121,13 +121,13 @@ const Favourites = () => {
                   <button onClick={() => deleteCard(item)}>Удалить</button>
                 </div>
               ) : (
-                <h3>Загрузка избранных товаров</h3>
+                <h3 className={styles.title}>Загрузка избранных товаров</h3>
               )}
             </div>
           ))}
         </div>
       ) : (
-        <h2>Список избранного пуст</h2>
+        <h3 className={styles.title}>Список избранного пуст</h3>
       )}
     </div>
   );

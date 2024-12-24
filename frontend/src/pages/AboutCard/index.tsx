@@ -18,7 +18,7 @@ const AboutCard = () => {
   const [openSection, setOpenSection] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [isAddedCart, setIsAddedCart] = useState<boolean>();
+  const [isAddedCart, setIsAddedCart] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -307,7 +307,7 @@ const AboutCard = () => {
               </div>
             </div>
           </div>
-          {isVisible && isAddedCart && (
+          {isVisible && (
             <SuccessfullyAdded itemName={card.title} cart={isAddedCart} />
           )}
         </div>

@@ -49,8 +49,8 @@ const New = () => {
   return (
     <div>
       <BreadCrumbs items={breadCrumbs} />
-      <section className={styles.sales}>
-        <h2 className={styles.sales__title}>Новинки</h2>
+      <section className={styles.new}>
+        <h2 className={styles.new__title}>Новинки</h2>
         {isLoading ? (
           <div className={styles.cards}>
             {cards.map((item) => (
@@ -60,7 +60,7 @@ const New = () => {
             ))}
           </div>
         ) : (
-          <h3 className={styles.sales__title}>Загрузка новинок...</h3>
+          <h3 className={styles.new__title}>Загрузка новинок...</h3>
         )}
       </section>
     </div>

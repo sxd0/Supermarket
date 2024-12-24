@@ -80,7 +80,7 @@ const Cart = () => {
 
       <h2 className={styles.title}>Корзина</h2>
 
-      {cart ? (
+      {cart?.length ? (
         <div className={styles.cart}>
           {cart.map((item) => (
             <div key={item.id}>
@@ -105,13 +105,13 @@ const Cart = () => {
                   </p>
                 </Link>
               ) : (
-                <h3>Загрузка товаров</h3>
+                <h3 className={styles.title}>Загрузка товаров корзины</h3>
               )}
             </div>
           ))}
         </div>
       ) : (
-        <h1>Ваша корзина пуста</h1>
+        <h3 className={styles.title}>Ваша корзина пуста</h3>
       )}
     </div>
   );
